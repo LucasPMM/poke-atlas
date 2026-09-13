@@ -1,10 +1,10 @@
 # poke-atlas
 
 A multilingual Pokédex built with React, TypeScript, Vite, and Tailwind CSS.
-The current milestone includes a responsive first-page catalog, detail routes,
-theme and language preferences, shared UI primitives, validated PokéAPI models,
-and persisted TanStack Query caching. Infinite scrolling is next in the
-[roadmap](pokedex-project-roadmap.md).
+The current milestone includes a responsive, infinitely scrolling catalog,
+detail routes, theme and language preferences, shared UI primitives, validated
+PokéAPI models, and persisted TanStack Query caching. Search across the catalog
+is next in the [roadmap](pokedex-project-roadmap.md).
 
 ## Requirements
 

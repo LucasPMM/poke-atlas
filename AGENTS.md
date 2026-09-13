@@ -39,6 +39,15 @@
   barrel, like other components.
 - Keep the header pinned to the top without covering page content. The favicon
   must have a transparent outer background and use the brand palette.
+- Keep the header limited to the brand, language picker, and theme toggle. Make
+  both controls 44 px square, including on mobile. Scroll to the top when a
+  Pokémon detail route opens or its identifier changes.
+- Reserve card artwork and text geometry before images load. Keep card boxes
+  stationary during hover/focus animations; artwork may scale inside its frame.
+- Infinite lists use TanStack Query page cursors and an IntersectionObserver
+  sentinel. Guard each next-page offset against duplicate requests, retain
+  loaded cards after later-page errors, and offer an explicit retry and an
+  accessible manual load action.
 - Keep mobile and desktop layouts accessible with visible focus styles,
   keyboard support, and comfortable touch targets.
 - Never commit unless the user explicitly requests a commit after reviewing

@@ -8,6 +8,7 @@ export {
 export {
   evolutionChainOptions,
   pokemonDetailsOptions,
+  pokemonInfiniteListOptions,
   pokemonKeys,
   pokemonListOptions,
   pokemonSpeciesOptions,

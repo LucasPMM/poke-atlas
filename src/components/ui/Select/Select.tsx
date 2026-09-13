@@ -2,6 +2,7 @@ import ReactSelect, { type SingleValue } from 'react-select'
 
 export type SelectOption<T extends string> = {
   label: string
+  shortLabel?: string
   value: T
 }
 
@@ -30,22 +31,28 @@ export const Select = <T extends string>({
   return (
     <ReactSelect<SelectOption<T>, false>
       aria-label={ariaLabel}
-      className="min-w-36 text-sm"
+      className="w-11 shrink-0 text-sm"
       classNames={{
         control: () =>
-          'min-h-11 rounded-lg border border-line bg-surface px-1 shadow-none transition-colors hover:border-action focus-within:border-action focus-within:ring-2 focus-within:ring-action/20',
+          'h-11 w-11 rounded-lg border border-line bg-surface shadow-none transition-colors hover:border-action focus-within:border-action focus-within:ring-2 focus-within:ring-action/20',
         menu: () => 'z-30 rounded-lg border border-line bg-surface shadow-lg',
         menuList: () => 'p-1',
         option: (state) =>
           `cursor-pointer rounded-md px-3 py-2 text-ink ${state.isFocused ? 'bg-surface-muted' : ''} ${state.isSelected ? 'font-medium text-action' : ''}`,
-        singleValue: () => 'text-ink',
-        dropdownIndicator: () => 'text-muted',
-        indicatorSeparator: () => 'hidden'
+        singleValue: () => 'font-semibold text-ink',
+        valueContainer: () => 'flex h-full items-center justify-center p-0'
       }}
+      components={{ DropdownIndicator: null, IndicatorSeparator: null }}
+      formatOptionLabel={(option, { context }) =>
+        context === 'value' ? (option.shortLabel ?? option.label) : option.label
+      }
       isClearable={false}
       isSearchable={false}
       onChange={handleChange}
       options={[...options]}
+      styles={{
+        menu: (base) => ({ ...base, left: 'auto', right: 0, width: 160 })
+      }}
       unstyled
       value={selected}
     />

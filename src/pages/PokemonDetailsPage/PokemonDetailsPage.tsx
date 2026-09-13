@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { useLayoutEffect } from 'react'
 import { Link, useParams } from 'react-router'
 import { ApiError } from '@/api/errors'
 import { pokemonDetailsOptions } from '@/api/pokemon'
@@ -12,6 +13,15 @@ import { useI18n } from '@/lib/i18n'
 export const PokemonDetailsPage = () => {
   const { id = '' } = useParams()
   const { locale, t } = useI18n()
+
+  useLayoutEffect(() => {
+    if (id.length === 0) {
+      return
+    }
+
+    window.scrollTo(0, 0)
+  }, [id])
+
   const pokemonQuery = useQuery({
     ...pokemonDetailsOptions(id),
     enabled: id.length > 0

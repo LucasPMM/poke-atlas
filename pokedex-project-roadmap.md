@@ -1,7 +1,7 @@
 # poke-atlas — Project Roadmap
 
-> Project status: Phases 0–2 are committed. Phase 3 (base listing) is
-> implemented locally and awaits review; Phase 4 is next.
+> Project status: Phases 0–3 are committed. Phase 4 (infinite scroll and
+> navigation polish) is implemented locally and awaits review; Phase 5 is next.
 
 ## 1. Project Overview
 
@@ -1429,6 +1429,12 @@ Cover:
 - Prevent duplicate requests.
 - Handle pagination errors.
 - Add end-of-list state.
+- Keep prior cards visible when a later page fails, with explicit retry and a
+  keyboard-accessible manual load action.
+- Keep card frames stationary during hover motion while artwork animates.
+- Reset scroll on Pokémon detail navigation, and keep the fixed header to one
+  mobile row with equal-sized language and theme controls. Remove redundant
+  Home/Explore header links.
 
 ### Tests
 

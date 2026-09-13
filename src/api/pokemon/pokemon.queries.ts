@@ -1,4 +1,4 @@
-import { queryOptions } from '@tanstack/react-query'
+import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query'
 import {
   getEvolutionChain,
   getPokemon,
@@ -12,6 +12,7 @@ const DAY_MS = 24 * 60 * 60 * 1000
 export const pokemonKeys = {
   list: (offset: number, limit: number) =>
     ['pokemon', 'list', offset, limit] as const,
+  infiniteList: (limit: number) => ['pokemon', 'infinite-list', limit] as const,
   details: (identifier: string | number) =>
     ['pokemon', 'details', identifier] as const,
   species: (identifier: string | number) =>
@@ -25,6 +26,16 @@ export const pokemonListOptions = (offset = 0, limit = 30) =>
   queryOptions({
     queryKey: pokemonKeys.list(offset, limit),
     queryFn: ({ signal }) => getPokemonListPage(offset, limit, signal),
+    staleTime: DAY_MS
+  })
+
+export const pokemonInfiniteListOptions = (limit = 24) =>
+  infiniteQueryOptions({
+    queryKey: pokemonKeys.infiniteList(limit),
+    initialPageParam: 0,
+    queryFn: ({ pageParam, signal }) =>
+      getPokemonListPage(pageParam, limit, signal),
+    getNextPageParam: (lastPage) => lastPage.nextOffset ?? undefined,
     staleTime: DAY_MS
   })
 

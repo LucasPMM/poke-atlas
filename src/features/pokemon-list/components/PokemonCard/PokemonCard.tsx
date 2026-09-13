@@ -15,7 +15,7 @@ export const PokemonCard = ({ pokemon }: PokemonCardProps) => {
 
   return (
     <Link
-      className="group block min-w-0 rounded-2xl bg-surface p-3 transition-[transform,box-shadow] duration-200 hover:-translate-y-1 hover:shadow-lg focus-visible:-translate-y-1 focus-visible:shadow-lg motion-reduce:transition-none motion-reduce:hover:transform-none motion-reduce:focus-visible:transform-none sm:p-4"
+      className="group block min-w-0 rounded-2xl bg-surface p-3 transition-shadow duration-200 hover:shadow-lg focus-visible:shadow-lg motion-reduce:transition-none sm:p-4"
       to={`/pokemon/${pokemon.id}`}
     >
       <div className="flex aspect-square items-center justify-center overflow-hidden rounded-xl bg-surface-muted">

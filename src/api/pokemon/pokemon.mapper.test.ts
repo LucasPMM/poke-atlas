@@ -22,6 +22,7 @@ const named = (name: string, id: number) => ({
 const pokemonFixture: PokemonDto = {
   id: 25,
   name: 'pikachu',
+  species: named('pikachu', 25),
   height: 4,
   weight: 60,
   types: [{ slot: 1, type: named('electric', 13) }],
@@ -44,6 +45,7 @@ describe('Pokémon response mapping', () => {
 
     expect(pokemon).toMatchObject({
       id: 25,
+      speciesId: 25,
       name: 'pikachu',
       artworkUrl: 'https://example.com/art.png',
       types: ['electric'],
@@ -68,6 +70,16 @@ describe('Pokémon response mapping', () => {
       mapPokemon({ ...pokemonFixture, sprites: { front_default: null } })
         .artworkUrl
     ).toBeNull()
+  })
+
+  it('keeps a variety linked to its base species', () => {
+    expect(
+      mapPokemon({
+        ...pokemonFixture,
+        id: 10080,
+        name: 'pikachu-rock-star'
+      })
+    ).toMatchObject({ id: 10080, speciesId: 25, name: 'pikachu-rock-star' })
   })
 
   it('normalizes page navigation and resource IDs', () => {
@@ -106,13 +118,22 @@ describe('Pokémon response mapping', () => {
       names: [
         { name: 'Pikachu', language: named('en', 9) },
         { name: 'Pikachu', language: named('fr', 5) }
+      ],
+      genera: [{ genus: 'Mouse Pokémon', language: named('en', 9) }],
+      flavor_text_entries: [
+        {
+          flavor_text: 'It stores\n electricity\f in its cheeks.',
+          language: named('en', 9)
+        }
       ]
     }
 
     expect(mapPokemonSpecies(species)).toMatchObject({
-      generation: 'generation-i',
+      generation: 1,
       evolutionChainId: 10,
-      names: { en: 'Pikachu', fr: 'Pikachu' }
+      names: { en: 'Pikachu', fr: 'Pikachu' },
+      genera: { en: 'Mouse Pokémon' },
+      flavorTexts: { en: 'It stores electricity in its cheeks.' }
     })
   })
 

@@ -18,6 +18,10 @@ describe('PokéAPI client', () => {
         JSON.stringify({
           id: 25,
           name: 'pikachu',
+          species: {
+            name: 'pikachu',
+            url: 'https://pokeapi.co/api/v2/pokemon-species/25/'
+          },
           height: 4,
           weight: 60,
           types: [
@@ -46,7 +50,12 @@ describe('PokéAPI client', () => {
     expect(fetchMock.mock.calls[0]?.[0].toString()).toBe(
       'https://pokeapi.co/api/v2/pokemon/pikachu'
     )
-    expect(pokemon).toMatchObject({ id: 25, name: 'pikachu', artworkUrl: null })
+    expect(pokemon).toMatchObject({
+      id: 25,
+      speciesId: 25,
+      name: 'pikachu',
+      artworkUrl: null
+    })
     expect(pokemon).not.toHaveProperty('sprites')
   })
 

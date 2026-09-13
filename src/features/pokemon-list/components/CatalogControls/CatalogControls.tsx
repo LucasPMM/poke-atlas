@@ -7,33 +7,17 @@ import { Select, type SelectOption } from '@/components/ui/Select'
 import { ShouldRender } from '@/components/ui/ShouldRender'
 import { Text } from '@/components/ui/Text'
 import { TextInput } from '@/components/ui/TextInput'
-import { type TranslationKey, useI18n } from '@/lib/i18n'
+import {
+  getPokemonTypeLabel,
+  POKEMON_TYPES,
+  type TranslationKey,
+  useI18n
+} from '@/lib/i18n'
 import {
   type CatalogFilters,
   type CatalogSort,
   SORT_VALUES
 } from '../../catalog-filters'
-
-const POKEMON_TYPES = [
-  'normal',
-  'fire',
-  'water',
-  'electric',
-  'grass',
-  'ice',
-  'fighting',
-  'poison',
-  'ground',
-  'flying',
-  'psychic',
-  'bug',
-  'rock',
-  'ghost',
-  'dragon',
-  'dark',
-  'steel',
-  'fairy'
-] as const
 
 type FilterKey = 'search' | 'type' | 'generation' | 'ability' | 'sort'
 type ChipKey = Exclude<FilterKey, 'sort'>
@@ -184,8 +168,7 @@ export const CatalogControls = ({
   const dialogRef = useRef<HTMLDialogElement>(null)
   const abilityQuery = useQuery(pokemonAbilityNamesOptions())
   const abilityNames = abilityQuery.data ?? []
-  const selectedType = POKEMON_TYPES.find((type) => type === filters.type)
-  const typeLabel = selectedType ? t(`types.${selectedType}`) : filters.type
+  const typeLabel = getPokemonTypeLabel(filters.type, t)
   const chips: Array<{
     key: ChipKey
     value: string

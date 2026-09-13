@@ -4,8 +4,10 @@ A multilingual Pokédex built with React, TypeScript, Vite, and Tailwind CSS.
 The current milestone includes a responsive, infinitely scrolling catalog,
 debounced name/number search, shareable type/generation/ability filters, sorting,
 detail routes, theme and language preferences, shared UI primitives, validated
-PokéAPI models, and persisted TanStack Query caching. See the
-[roadmap](pokedex-project-roadmap.md) for upcoming detail-page work.
+PokéAPI models, and persisted TanStack Query caching. Pokémon details now show
+localized species information, measurements, abilities, base stats, defensive
+type matchups, and complete evolution lines with branch navigation. See the
+[roadmap](pokedex-project-roadmap.md) for upcoming type-aware themes.
 
 ## Requirements
 
@@ -39,6 +41,9 @@ and relevant membership lists, then intersects and sorts them in the client.
 Filtered results are revealed in batches of 24 cards. Weakness, height, and
 weight filters remain later extensions because the v2 list endpoint does not
 provide the data needed for a reliable bulk filter.
+The detail page loads species, types, and evolution data through separate
+cached queries. Its sections can retry independently when optional data fails,
+while measurements, abilities, and stats remain available.
 
 The published site link and final desktop/mobile screenshots will be added
 here after the release is deployed and visually verified.

@@ -22,6 +22,7 @@ export type PokemonStat = {
 
 export type Pokemon = {
   id: number
+  speciesId: number
   name: string
   artworkUrl: string | null
   spriteUrl: string | null
@@ -35,9 +36,11 @@ export type Pokemon = {
 export type PokemonSpecies = {
   id: number
   name: string
-  generation: string
+  generation: number
   evolutionChainId: number | null
   names: Record<string, string>
+  genera: Record<string, string>
+  flavorTexts: Record<string, string>
 }
 
 export type PokemonType = {
@@ -51,6 +54,7 @@ export type PokemonType = {
 export type EvolutionNode = {
   id: number
   name: string
+  artworkUrl: string
   minimumLevel: number | null
   trigger: string | null
   evolvesTo: Array<EvolutionNode>

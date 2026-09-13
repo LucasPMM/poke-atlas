@@ -22,6 +22,7 @@ export const generationMembersSchema = z.object({
 export const pokemonSchema = z.object({
   id: z.number().int().positive(),
   name: z.string(),
+  species: namedResourceSchema,
   height: z.number().nonnegative(),
   weight: z.number().nonnegative(),
   types: z.array(z.object({ slot: z.number(), type: namedResourceSchema })),
@@ -52,7 +53,13 @@ export const speciesSchema = z.object({
   name: z.string(),
   generation: namedResourceSchema,
   evolution_chain: z.object({ url: z.string() }).nullable(),
-  names: z.array(z.object({ name: z.string(), language: namedResourceSchema }))
+  names: z.array(z.object({ name: z.string(), language: namedResourceSchema })),
+  genera: z.array(
+    z.object({ genus: z.string(), language: namedResourceSchema })
+  ),
+  flavor_text_entries: z.array(
+    z.object({ flavor_text: z.string(), language: namedResourceSchema })
+  )
 })
 
 export const typeSchema = z.object({

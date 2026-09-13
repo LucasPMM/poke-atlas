@@ -295,6 +295,29 @@ input:focus-visible {
   overflow: hidden;
 }
 
+.stat-meter {
+  appearance: none;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--surface-muted);
+}
+
+.stat-meter::-webkit-meter-bar {
+  border: 0;
+  border-radius: 9999px;
+  background: var(--surface-muted);
+}
+
+.stat-meter::-webkit-meter-optimum-value {
+  border-radius: 9999px;
+  background: var(--semantic-action);
+}
+
+.stat-meter::-moz-meter-bar {
+  border-radius: 9999px;
+  background: var(--semantic-action);
+}
+
 .shimmer::after {
   position: absolute;
   inset: 0;

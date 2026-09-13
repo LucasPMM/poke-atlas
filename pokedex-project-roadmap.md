@@ -1,9 +1,8 @@
 # poke-atlas — Project Roadmap
 
-> Project status: Phases 0–4 are committed. Phases 5 and 6 (search, core
-> filters, sorting, and ability filtering) are implemented locally and await
-> review. Phase 7 is next. Weakness, height, and weight filters remain planned
-> extensions of Phase 6.
+> Project status: Phases 0–6 are committed. Phase 7 (Pokémon details) is
+> implemented locally and awaits review; Phase 8 is next. Weakness, height,
+> and weight filters remain planned extensions of Phase 6.
 
 ## 1. Project Overview
 
@@ -1515,6 +1514,15 @@ Implement:
 - Evolution chain.
 - Loading state.
 - Error state.
+- Resolve a variety's species through its Pokémon resource rather than assuming
+  the Pokémon and species IDs match.
+- Localize species names, genus, flavor text, labels, and units when data is
+  available, with an English fallback for untranslated PokéAPI fields.
+- Multiply defensive type relations across both types so weaknesses,
+  resistances, and immunities account for cancellations and fourfold effects.
+- Keep core details visible when species, type, or evolution requests fail;
+  show per-section loading geometry, errors, and retry actions.
+- Keep branched evolution lines navigable on narrow screens.
 
 Add prefetching from cards if it improves perceived performance.
 

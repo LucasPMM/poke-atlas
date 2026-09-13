@@ -36,6 +36,7 @@ export const mapPokemon = (dto: PokemonDto): Pokemon => {
 
   return {
     id: dto.id,
+    speciesId: extractResourceId(dto.species.url),
     name: dto.name,
     artworkUrl:
       dto.sprites.other?.['official-artwork']?.front_default ?? spriteUrl,
@@ -61,12 +62,21 @@ export const mapPokemon = (dto: PokemonDto): Pokemon => {
 export const mapPokemonSpecies = (dto: PokemonSpeciesDto): PokemonSpecies => ({
   id: dto.id,
   name: dto.name,
-  generation: dto.generation.name,
+  generation: extractResourceId(dto.generation.url),
   evolutionChainId: dto.evolution_chain
     ? extractResourceId(dto.evolution_chain.url)
     : null,
   names: Object.fromEntries(
     dto.names.map(({ language, name }) => [language.name, name])
+  ),
+  genera: Object.fromEntries(
+    dto.genera.map(({ genus, language }) => [language.name, genus])
+  ),
+  flavorTexts: Object.fromEntries(
+    dto.flavor_text_entries.map(({ flavor_text, language }) => [
+      language.name,
+      flavor_text.replace(/\s+/g, ' ').trim()
+    ])
   )
 })
 
@@ -80,13 +90,18 @@ export const mapPokemonType = (dto: PokemonTypeDto): PokemonType => ({
   noDamageFrom: dto.damage_relations.no_damage_from.map(({ name }) => name)
 })
 
-const mapEvolutionNode = (dto: ChainLinkDto): EvolutionNode => ({
-  id: extractResourceId(dto.species.url),
-  name: dto.species.name,
-  minimumLevel: dto.evolution_details?.[0]?.min_level ?? null,
-  trigger: dto.evolution_details?.[0]?.trigger?.name ?? null,
-  evolvesTo: dto.evolves_to.map(mapEvolutionNode)
-})
+const mapEvolutionNode = (dto: ChainLinkDto): EvolutionNode => {
+  const id = extractResourceId(dto.species.url)
+
+  return {
+    id,
+    name: dto.species.name,
+    artworkUrl: getOfficialArtworkUrl(id),
+    minimumLevel: dto.evolution_details?.[0]?.min_level ?? null,
+    trigger: dto.evolution_details?.[0]?.trigger?.name ?? null,
+    evolvesTo: dto.evolves_to.map(mapEvolutionNode)
+  }
+}
 
 export const mapEvolutionChain = (dto: EvolutionChainDto): EvolutionChain => ({
   id: dto.id,

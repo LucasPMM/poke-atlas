@@ -17,7 +17,7 @@ importers:
       '@hookform/resolvers':
         specifier: ^5.2.2
         version: 5.9.1(react-hook-form@7.88.0(react@19.3.0))(zod@4.6.4)
-      '@tanstack/query-sync-storage-persister':
+      '@tanstack/query-async-storage-persister':
         specifier: ^5.102.8
         version: 5.102.8
       '@tanstack/react-query':
@@ -58,8 +58,8 @@ importers:
         specifier: ^4.1.12
         version: 4.3.3(vite@7.3.6(@types/node@24.13.4)(jiti@2.7.0)(lightningcss@1.32.0))
       '@testing-library/jest-dom':
-        specifier: ^6.6.4
-        version: 6.10.0(@testing-library/dom@10.4.1)
+        specifier: ^7.0.1
+        version: 7.0.1(@testing-library/dom@10.4.1)(vitest@3.2.7(@types/node@24.13.4)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0))
       '@testing-library/react':
         specifier: ^16.3.0
         version: 16.3.3(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -825,14 +825,14 @@ packages:
     peerDependencies:
       vite: ^5.2.0 || ^6 || ^7 || ^8
 
+  '@tanstack/query-async-storage-persister@5.102.8':
+    resolution: {integrity: sha512-9smqFJWyhRo+0l3NqaGFo6CQVr+3jpKOVZBQXI/LL+GoTIGhhxq1wTZegeI63dy0oResZx/EyazGzDjW8harbg==}
+
   '@tanstack/query-core@5.102.8':
     resolution: {integrity: sha512-ZNjkJ33CqvPNec/6lZBnHqLc3EVGPZ9ySLhYahU9TcuRFdmwXewuj0c4hwSWcGHqEUwcSrKeZ+oGcvPBqXcQcg==}
 
   '@tanstack/query-persist-client-core@5.102.8':
     resolution: {integrity: sha512-t3v4/D6ejo/BrPzM5gm/AT3c4CWPCxFa+0cIjAeHAeanGPG6rCjFS1hZnPZH/rf55qe3qYYgx5U6iBZMY1PQjA==}
-
-  '@tanstack/query-sync-storage-persister@5.102.8':
-    resolution: {integrity: sha512-UvIpYl6jipKJHfITAieQaXMvVPoJh2IkQkWDYZNRPycoGbNYdqB+UdRVoXkZagB3EdeKnlC7sA61grsEC87Wfw==}
 
   '@tanstack/react-query-persist-client@5.102.8':
     resolution: {integrity: sha512-WOZReC+m9klekPtG7eeZ3txJeMA9lg2R0RytSG3yXcZgJItQAVIyoobJdbdIQtlpgcU2tSzsOEBtJacs2vlCOA==}
@@ -849,12 +849,15 @@ packages:
     resolution: {integrity: sha512-o4PXJQidqJl82ckFaXUeoAW+XysPLauYI43Abki5hABd853iMhitooc6znOnczgbTYmEP6U6/y1ZyKAIsvMKGg==}
     engines: {node: '>=18'}
 
-  '@testing-library/jest-dom@6.10.0':
-    resolution: {integrity: sha512-HQwu0KaB2zyT0iLzBL+8CLyZDL3KlZlZJ+2iyc9uCUnlJVskJU/UlPuVCyIPhtukjPQdT2QNoR5nCP5FqTmmDQ==}
+  '@testing-library/jest-dom@7.0.1':
+    resolution: {integrity: sha512-oMDTC3oA+6CXSO2JZnvOI7CA6oVub6kij5ggk9ohwye5slmkwxYDXcPOVxgMw/RQlticjtO0C1RZkR97HgrWMw==}
     engines: {node: '>=22', npm: '>=6', yarn: '>=1'}
-    deprecated: Incorrect minor release with breaking changes (Node >=22 and required @testing-library/dom peer). Use 6.9.1 for the 6.x line, or upgrade to 7.0.0.
     peerDependencies:
       '@testing-library/dom': '>=10 <11'
+      vitest: '>= 0.32'
+    peerDependenciesMeta:
+      vitest:
+        optional: true
 
   '@testing-library/react@16.3.3':
     resolution: {integrity: sha512-Uo193NgQbPMz6lrrhtRQQFcMC6Re/ELLFbbuVL30WDlZxlpZf9/lMHTAVxPRLw1q1iu9OJmR1c2BLiENRstdBg==}
@@ -2236,16 +2239,16 @@ snapshots:
       tailwindcss: 4.3.3
       vite: 7.3.6(@types/node@24.13.4)(jiti@2.7.0)(lightningcss@1.32.0)
 
+  '@tanstack/query-async-storage-persister@5.102.8':
+    dependencies:
+      '@tanstack/query-core': 5.102.8
+      '@tanstack/query-persist-client-core': 5.102.8
+
   '@tanstack/query-core@5.102.8': {}
 
   '@tanstack/query-persist-client-core@5.102.8':
     dependencies:
       '@tanstack/query-core': 5.102.8
-
-  '@tanstack/query-sync-storage-persister@5.102.8':
-    dependencies:
-      '@tanstack/query-core': 5.102.8
-      '@tanstack/query-persist-client-core': 5.102.8
 
   '@tanstack/react-query-persist-client@5.102.8(@tanstack/react-query@5.102.8(react@19.3.0))(react@19.3.0)':
     dependencies:
@@ -2269,7 +2272,7 @@ snapshots:
       picocolors: 1.1.1
       pretty-format: 27.5.1
 
-  '@testing-library/jest-dom@6.10.0(@testing-library/dom@10.4.1)':
+  '@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.1)(vitest@3.2.7(@types/node@24.13.4)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0))':
     dependencies:
       '@adobe/css-tools': 4.5.0
       '@testing-library/dom': 10.4.1
@@ -2278,6 +2281,8 @@ snapshots:
       dom-accessibility-api: 0.6.3
       picocolors: 1.1.1
       redent: 3.0.0
+    optionalDependencies:
+      vitest: 3.2.7(@types/node@24.13.4)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)
 
   '@testing-library/react@16.3.3(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:

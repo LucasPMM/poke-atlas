@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  --header-height: 80px;
   --surface-canvas: #f4f4f5;
   --surface-paper: #ffffff;
   --surface-muted: #f2f2f3;
@@ -110,6 +111,14 @@ input:focus-visible {
 .page-container {
   width: min(100% - 2rem, 1200px);
   margin-inline: auto;
+}
+
+.app-shell {
+  padding-top: var(--header-height);
+}
+
+#catalog {
+  scroll-margin-top: calc(var(--header-height) + 24px);
 }
 
 .brand-mark {

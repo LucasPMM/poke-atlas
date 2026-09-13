@@ -1,4 +1,4 @@
-import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister'
 import { QueryClient } from '@tanstack/react-query'
 import { removeOldestQuery } from '@tanstack/react-query-persist-client'
 import { ApiError } from '@/api/errors'
@@ -42,7 +42,7 @@ export const queryClient = new QueryClient({
   }
 })
 
-export const pokemonPersister = createSyncStoragePersister({
+export const pokemonPersister = createAsyncStoragePersister({
   key: 'poke-atlas-query-cache',
   storage: getStorage(),
   retry: ({ persistedClient, error, errorCount }) => {

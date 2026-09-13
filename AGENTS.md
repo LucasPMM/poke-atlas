@@ -6,6 +6,9 @@
   `pt-BR`, `en`, and `fr` keys. Use the typed translation API.
 - Use Node.js 24, pnpm, strict TypeScript, Tailwind CSS, and root Biome. Run
   `pnpm check` and `pnpm build` before handing off implementation work.
+- Check the installed package declarations and current official docs before
+  using a library API. Do not add deprecated APIs; migrate existing uses when
+  touched.
 - Never use `let`, `else`, `else if`, or `switch` in JavaScript or TypeScript.
   Prefer arrow functions, `const`, guard clauses, early returns, and lookup maps.
 - Keep API requests in `src/api` and map PokéAPI DTOs to app models before
@@ -22,6 +25,9 @@
   Select; forms use React Hook Form, Zod, and localized validation messages.
 - Compose shimmer skeletons per component so loading geometry matches the
   final view; keep the shared Skeleton as the primitive.
+- Keep text-filter drafts local and debounce query/filter propagation (300 ms
+  by default). A keystroke must not trigger one API request per character;
+  explicit form submissions and select changes may apply immediately.
 - Use semantic colors based on `DESIGN.md` in light and dark modes. Keep
   every UI color in the global theme tokens, including decorative accents.
   Initialize locale and theme from saved preferences or browser preferences;
@@ -31,6 +37,8 @@
   explicit fallback and diagnostic log or an actionable error state.
 - Give each page a PascalCase folder, matching `.tsx` source, and `index.ts`
   barrel, like other components.
+- Keep the header pinned to the top without covering page content. The favicon
+  must have a transparent outer background and use the brand palette.
 - Keep mobile and desktop layouts accessible with visible focus styles,
   keyboard support, and comfortable touch targets.
 - Never commit unless the user explicitly requests a commit after reviewing

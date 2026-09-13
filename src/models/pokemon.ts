@@ -1,6 +1,7 @@
 export type PokemonSummary = {
   id: number
   name: string
+  artworkUrl: string
 }
 
 export type PokemonListPage = {

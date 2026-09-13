@@ -1,7 +1,7 @@
 # poke-atlas — Project Roadmap
 
-> Project status: Phases 0 and 1 are committed. Phase 2 (PokéAPI foundation) is
-> implemented locally and awaits review; Phase 3 (base listing) is next.
+> Project status: Phases 0–2 are committed. Phase 3 (base listing) is
+> implemented locally and awaits review; Phase 4 is next.
 
 ## 1. Project Overview
 
@@ -145,6 +145,8 @@ TanStack Query cache and a bounded age. Cache hydration must not prevent the
 app from working when browser storage is unavailable. Use Zustand only if a
 future feature introduces shared client-only state that URL state, providers,
 React Hook Form, and TanStack Query do not model well.
+Use the supported async-storage persister, including when the underlying
+browser storage is synchronous. Do not introduce deprecated library APIs.
 
 Static resources such as types and generations may use long stale times.
 
@@ -591,6 +593,9 @@ Recommended behavior:
 - Case insensitive.
 - Trim whitespace.
 - Debounced text input.
+- Apply text search/filter drafts after a short debounce (default 300 ms) so
+  typing does not produce one query per character. Explicit submit remains
+  immediate.
 - Support partial names.
 - Normalize diacritics when applicable.
 - Display an empty state when there are no matches.
@@ -1403,6 +1408,10 @@ Cover:
 - Render loading skeletons.
 - Render errors.
 - Render artwork fallbacks.
+- Add a transparent brand favicon and keep the header pinned without covering
+  responsive content.
+- Replace deprecated query persistence APIs.
+- Prepare a reusable debounced value primitive for later text filters.
 
 ### Acceptance criteria
 

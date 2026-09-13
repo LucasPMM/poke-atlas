@@ -1,10 +1,10 @@
 # poke-atlas
 
 A multilingual Pokédex built with React, TypeScript, Vite, and Tailwind CSS.
-The current milestone includes the project foundation and Phase 2 data layer:
-a responsive interface, route shell, theme and language preferences, shared UI
-primitives, validated PokéAPI models, and persisted TanStack Query caching.
-The catalog listing begins in Phase 3 of the [roadmap](pokedex-project-roadmap.md).
+The current milestone includes a responsive first-page catalog, detail routes,
+theme and language preferences, shared UI primitives, validated PokéAPI models,
+and persisted TanStack Query caching. Infinite scrolling is next in the
+[roadmap](pokedex-project-roadmap.md).
 
 ## Requirements
 
@@ -29,7 +29,9 @@ repository path, for example `/poke-atlas/`.
 Read [AGENTS.md](AGENTS.md), the [roadmap](pokedex-project-roadmap.md), and
 [DESIGN.md](DESIGN.md) before implementation. Runtime copy lives in one typed
 catalog under `src/lib/i18n`; all three locales must retain identical keys.
-PokéAPI responses will be normalized in `src/api` before they reach UI code.
+PokéAPI responses are normalized in `src/api` before they reach UI code. Live
+text filters use `useDebouncedValue` with a 300 ms default; the hero's explicit
+search submission navigates immediately and issues no query while typing.
 
 The published site link and final desktop/mobile screenshots will be added
 here after the release is deployed and visually verified.

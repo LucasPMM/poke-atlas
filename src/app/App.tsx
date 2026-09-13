@@ -7,7 +7,7 @@ import { PokemonDetailsPage } from '@/pages/PokemonDetailsPage'
 
 export const App = () => {
   return (
-    <div className="min-h-screen bg-canvas text-ink">
+    <div className="app-shell min-h-screen bg-canvas text-ink">
       <Header />
       <main>
         <Routes>

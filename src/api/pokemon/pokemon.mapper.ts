@@ -15,14 +15,20 @@ import type {
   ResourceListDto
 } from '../dto'
 import { extractNextOffset, extractResourceId } from '../resource-id'
+import { getOfficialArtworkUrl } from './artwork'
 
 export const mapPokemonList = (dto: ResourceListDto): PokemonListPage => ({
   count: dto.count,
   nextOffset: extractNextOffset(dto.next),
-  results: dto.results.map((resource) => ({
-    id: extractResourceId(resource.url),
-    name: resource.name
-  }))
+  results: dto.results.map((resource) => {
+    const id = extractResourceId(resource.url)
+
+    return {
+      id,
+      name: resource.name,
+      artworkUrl: getOfficialArtworkUrl(id)
+    }
+  })
 })
 
 export const mapPokemon = (dto: PokemonDto): Pokemon => {

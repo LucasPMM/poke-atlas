@@ -81,8 +81,18 @@ describe('Pokémon response mapping', () => {
       count: 2,
       nextOffset: 30,
       results: [
-        { id: 1, name: 'bulbasaur' },
-        { id: 2, name: 'ivysaur' }
+        {
+          id: 1,
+          name: 'bulbasaur',
+          artworkUrl:
+            'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png'
+        },
+        {
+          id: 2,
+          name: 'ivysaur',
+          artworkUrl:
+            'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png'
+        }
       ]
     })
   })

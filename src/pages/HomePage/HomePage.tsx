@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/Button'
 import { Icon, type IconName } from '@/components/ui/Icon'
 import { Text } from '@/components/ui/Text'
+import { CatalogSection } from '@/features/pokemon-list/components/CatalogSection'
 import { SearchForm } from '@/features/pokemon-search/components/SearchForm'
 import { type TranslationKey, useI18n } from '@/lib/i18n'
 import { scrollToSection } from '@/lib/motion/scroll-to-section'
@@ -51,7 +52,7 @@ export const HomePage = () => {
           <SearchForm />
           <Button
             className="mt-6 px-0 text-action hover:bg-transparent"
-            onClick={() => scrollToSection('preview')}
+            onClick={() => scrollToSection('catalog')}
             variant="ghost"
           >
             {t('home.exploreAction')}
@@ -72,6 +73,8 @@ export const HomePage = () => {
           <div className="atlas-dot atlas-dot-two" />
         </div>
       </section>
+
+      <CatalogSection />
 
       <section className="page-container pb-4 pt-8 md:pt-16" id="preview">
         <div className="max-w-2xl">
@@ -99,26 +102,6 @@ export const HomePage = () => {
               </Text>
             </article>
           ))}
-        </div>
-      </section>
-
-      <section className="page-container mt-20 md:mt-28">
-        <div className="rounded-3xl bg-surface px-6 py-10 md:flex md:items-end md:justify-between md:gap-10 md:px-12 md:py-12">
-          <div className="max-w-xl">
-            <Text variant="eyebrow">{t('home.foundationLabel')}</Text>
-            <Text as="h2" className="mt-4" variant="heading">
-              {t('home.foundationTitle')}
-            </Text>
-            <Text className="mt-4" variant="muted">
-              {t('home.foundationDescription')}
-            </Text>
-          </div>
-          <div
-            aria-hidden="true"
-            className="mt-8 flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-action/10 text-action md:mt-0"
-          >
-            <Icon name="sparkles" size={30} />
-          </div>
         </div>
       </section>
     </>

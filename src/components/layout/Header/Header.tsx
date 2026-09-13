@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
@@ -8,6 +9,7 @@ import { scrollToSection } from '@/lib/motion/scroll-to-section'
 import { useTheme } from '@/lib/theme'
 
 export const Header = () => {
+  const headerRef = useRef<HTMLElement>(null)
   const { locale, setLocale, t } = useI18n()
   const { theme, setTheme } = useTheme()
   const { pathname } = useLocation()
@@ -17,17 +19,45 @@ export const Header = () => {
     { value: 'fr', label: t('controls.languageFrench') }
   ]
 
+  useLayoutEffect(() => {
+    const header = headerRef.current
+
+    if (header === null) {
+      return
+    }
+
+    const syncHeight = () => {
+      document.documentElement.style.setProperty(
+        '--header-height',
+        `${header.getBoundingClientRect().height}px`
+      )
+    }
+
+    syncHeight()
+
+    if (typeof ResizeObserver === 'undefined') {
+      return
+    }
+
+    const observer = new ResizeObserver(syncHeight)
+    observer.observe(header)
+    return () => observer.disconnect()
+  }, [])
+
   const explore = () => {
     if (pathname !== '/') {
       window.location.hash = '#/'
       return
     }
 
-    scrollToSection('preview')
+    scrollToSection('catalog')
   }
 
   return (
-    <header className="relative z-20 border-b border-line/70 bg-surface">
+    <header
+      className="fixed inset-x-0 top-0 z-50 border-b border-line/70 bg-surface"
+      ref={headerRef}
+    >
       <div className="page-container flex min-h-20 flex-wrap items-center justify-between gap-3 py-3">
         <Link
           aria-label="poke-atlas"

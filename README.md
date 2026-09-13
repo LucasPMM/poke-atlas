@@ -6,8 +6,10 @@ debounced name/number search, shareable type/generation/ability filters, sorting
 detail routes, theme and language preferences, shared UI primitives, validated
 PokéAPI models, and persisted TanStack Query caching. Pokémon details now show
 localized species information, measurements, abilities, base stats, defensive
-type matchups, and complete evolution lines with branch navigation. See the
-[roadmap](pokedex-project-roadmap.md) for upcoming type-aware themes.
+type matchups, and complete evolution lines with branch navigation. The detail
+view has distinct light/dark themes for all 18 Pokémon types, including a
+secondary accent for dual types. See the [roadmap](pokedex-project-roadmap.md)
+for upcoming detail features.
 
 ## Requirements
 
@@ -44,6 +46,14 @@ provide the data needed for a reliable bulk filter.
 The detail page loads species, types, and evolution data through separate
 cached queries. Its sections can retry independently when optional data fails,
 while measurements, abilities, and stats remain available.
+The persisted cache is versioned with the normalized API model; incompatible
+older entries are discarded. Resource identifiers are validated before a
+request, preventing paths such as `/pokemon-species/undefined`.
+
+The visible brand and localized browser title use **Poké Atlas** while the
+repository slug remains `poke-atlas`. The language selector shows country
+flags. Pokémon artwork uses subtle, reduced-motion-aware movement inside fixed
+frames; third-party Lottie animations can be reviewed individually later.
 
 The published site link and final desktop/mobile screenshots will be added
 here after the release is deployed and visually verified.

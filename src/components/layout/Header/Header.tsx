@@ -15,10 +15,21 @@ export const Header = () => {
     {
       value: 'pt-BR',
       label: t('controls.languagePortuguese'),
+      flag: '🇧🇷',
       shortLabel: 'PT'
     },
-    { value: 'en', label: t('controls.languageEnglish'), shortLabel: 'EN' },
-    { value: 'fr', label: t('controls.languageFrench'), shortLabel: 'FR' }
+    {
+      value: 'en',
+      label: t('controls.languageEnglish'),
+      flag: '🇺🇸',
+      shortLabel: 'EN'
+    },
+    {
+      value: 'fr',
+      label: t('controls.languageFrench'),
+      flag: '🇫🇷',
+      shortLabel: 'FR'
+    }
   ]
 
   useLayoutEffect(() => {
@@ -53,7 +64,7 @@ export const Header = () => {
     >
       <div className="page-container flex min-h-20 items-center justify-between gap-2 py-3">
         <Link
-          aria-label="poke-atlas"
+          aria-label={t('brand.name')}
           className="flex items-center gap-3"
           to="/"
         >
@@ -65,11 +76,7 @@ export const Header = () => {
             className="font-display text-xl font-semibold tracking-[-0.05em] text-ink"
             variant="unstyled"
           >
-            poke
-            <Text as="span" className="text-action" variant="unstyled">
-              -
-            </Text>
-            atlas
+            {t('brand.name')}
           </Text>
         </Link>
         <div className="flex shrink-0 items-center gap-2">

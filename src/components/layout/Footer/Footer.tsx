@@ -12,7 +12,7 @@ export const Footer = () => {
             className="font-display text-2xl font-medium tracking-[-0.04em] text-footer-ink"
             variant="unstyled"
           >
-            poke-atlas
+            {t('brand.name')}
           </Text>
           <Text
             className="mt-3 max-w-sm text-sm leading-6 text-footer-muted"
@@ -22,7 +22,7 @@ export const Footer = () => {
           </Text>
         </div>
         <Text className="text-sm text-footer-muted" variant="unstyled">
-          © {new Date().getFullYear()} poke-atlas
+          © {new Date().getFullYear()} {t('brand.name')}
         </Text>
       </div>
     </footer>

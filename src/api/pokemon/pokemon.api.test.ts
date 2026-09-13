@@ -6,6 +6,7 @@ import {
   getPokemonCatalog,
   getPokemonGenerationMembers,
   getPokemonListPage,
+  getPokemonSpecies,
   getPokemonTypeMembers
 } from './pokemon.api'
 
@@ -91,6 +92,16 @@ describe('PokéAPI client', () => {
     vi.stubGlobal('fetch', fetchMock)
 
     await expect(getPokemonListPage(-1, 30)).rejects.toBeInstanceOf(ApiError)
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('rejects a missing species identifier before a network request', async () => {
+    const fetchMock = vi.fn()
+    vi.stubGlobal('fetch', fetchMock)
+
+    await expect(
+      getPokemonSpecies(undefined as unknown as number)
+    ).rejects.toBeInstanceOf(ApiError)
     expect(fetchMock).not.toHaveBeenCalled()
   })
 

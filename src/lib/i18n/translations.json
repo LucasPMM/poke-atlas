@@ -1,5 +1,7 @@
 {
   "pt-BR": {
+    "brand.name": "Poké Atlas",
+    "meta.title": "Poké Atlas — Explore Pokémon",
     "brand.tagline": "Seu mundo Pokémon, organizado.",
     "controls.language": "Idioma",
     "controls.theme": "Aparência",
@@ -129,6 +131,8 @@
     "footer.note": "Uma jornada de descoberta, um Pokémon de cada vez."
   },
   "en": {
+    "brand.name": "Poké Atlas",
+    "meta.title": "Poké Atlas — Explore Pokémon",
     "brand.tagline": "Your Pokémon world, organized.",
     "controls.language": "Language",
     "controls.theme": "Appearance",
@@ -258,6 +262,8 @@
     "footer.note": "A journey of discovery, one Pokémon at a time."
   },
   "fr": {
+    "brand.name": "Poké Atlas",
+    "meta.title": "Poké Atlas — Explorez les Pokémon",
     "brand.tagline": "Votre univers Pokémon, organisé.",
     "controls.language": "Langue",
     "controls.theme": "Apparence",

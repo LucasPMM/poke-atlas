@@ -15,6 +15,9 @@
   passing data into UI components. Use TanStack Query for server state, caching,
   and persisted public API data. Add Zustand only when shared client-only state
   cannot be handled cleanly by providers, URL state, or React Hook Form.
+- Bump the persisted query-cache buster when normalized API models change.
+  Validate resource identifiers at the API boundary so missing IDs never
+  become requests to literal `undefined` paths.
 - Keep feature code in `src/features` and reusable primitives in
   `src/components/ui`. Every reusable component gets a PascalCase directory,
   matching `.tsx` file, and `index.ts` barrel. Import through the barrel.
@@ -35,6 +38,8 @@
   unless a bounded data strategy has been established.
 - Use semantic colors based on `DESIGN.md` in light and dark modes. Keep
   every UI color in the global theme tokens, including decorative accents.
+  Use centralized Pokémon type hues with global light/dark color formulas for
+  detail accents; check contrast across all 18 types.
   Initialize locale and theme from saved preferences or browser preferences;
   fall back to English and light mode. Keep choices visible and persisted.
   Respect reduced motion and use layout-matched shimmer loading.
@@ -49,6 +54,11 @@
   Pokémon detail route opens or its identifier changes.
 - Reserve card artwork and text geometry before images load. Keep card boxes
   stationary during hover/focus animations; artwork may scale inside its frame.
+  Keep evolution cards stationary on hover as well. Animate artwork only within
+  its reserved frame and respect reduced-motion preferences. Review the exact
+  license and provenance before bundling any third-party Lottie asset.
+- Keep the repository slug `poke-atlas`; use `Poké Atlas` as visible branding.
+  Localize the browser title and show country flags with language labels.
 - Infinite lists use TanStack Query page cursors and an IntersectionObserver
   sentinel. Guard each next-page offset against duplicate requests, retain
   loaded cards after later-page errors, and offer an explicit retry and an

@@ -59,7 +59,7 @@ const EvolutionBranch = ({
       </ShouldRender>
       <Link
         aria-current={node.id === currentSpeciesId ? 'page' : undefined}
-        className="group flex w-28 flex-col items-center rounded-2xl border border-line bg-surface p-3 text-center transition-[border-color,transform] duration-200 hover:-translate-y-1 hover:border-action focus-visible:border-action motion-reduce:transition-none motion-reduce:hover:transform-none sm:w-36"
+        className="pokemon-evolution-card group flex w-28 flex-col items-center rounded-2xl border border-line bg-surface p-3 text-center transition-[border-color,box-shadow] duration-200 motion-reduce:transition-none sm:w-36"
         state={{ from: backTo }}
         to={`/pokemon/${node.id}`}
       >

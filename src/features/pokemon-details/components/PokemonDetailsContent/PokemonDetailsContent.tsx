@@ -5,6 +5,10 @@ import {
   pokemonTypeOptions
 } from '@/api/pokemon'
 import type { Pokemon } from '@/models/pokemon'
+import {
+  getPokemonTypeStyle,
+  resolvePokemonTypeTheme
+} from '../../themes/pokemon-type-theme'
 import { EvolutionLine } from '../EvolutionLine'
 import { PokemonHero } from '../PokemonHero'
 import { PokemonProfile } from '../PokemonProfile'
@@ -27,6 +31,7 @@ export const PokemonDetailsContent = ({
     ...evolutionChainOptions(chainId ?? 0),
     enabled: chainId !== null
   })
+  const theme = resolvePokemonTypeTheme(pokemon.types)
   const isTypePending = typeQueries.some((query) => query.isPending)
   const isTypeError = typeQueries.some((query) => query.isError)
   const types = typeQueries.flatMap((query) => (query.data ? [query.data] : []))
@@ -48,7 +53,12 @@ export const PokemonDetailsContent = ({
   }
 
   return (
-    <div className="min-h-[60vh] pb-16 md:pb-24">
+    <div
+      className="pokemon-detail min-h-[60vh] pb-16 md:pb-24"
+      data-primary-type={theme.primary}
+      data-secondary-type={theme.secondary ?? undefined}
+      style={getPokemonTypeStyle(theme.primary)}
+    >
       <PokemonHero
         backTo={backTo}
         pokemon={pokemon}

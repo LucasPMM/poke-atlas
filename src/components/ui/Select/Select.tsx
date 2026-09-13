@@ -1,7 +1,9 @@
 import ReactSelect, { type SingleValue } from 'react-select'
+import { Text } from '../Text'
 
 export type SelectOption<T extends string> = {
   label: string
+  flag?: string
   shortLabel?: string
   value: T
 }
@@ -60,11 +62,35 @@ export const Select = <T extends string>({
           ? { DropdownIndicator: null, IndicatorSeparator: null }
           : { IndicatorSeparator: null }
       }
-      formatOptionLabel={(option, { context }) =>
-        context === 'value' && variant === 'compact'
-          ? (option.shortLabel ?? option.label)
-          : option.label
-      }
+      formatOptionLabel={(option, { context }) => {
+        const label =
+          context === 'value' && variant === 'compact'
+            ? (option.shortLabel ?? option.label)
+            : option.label
+
+        if (!option.flag) {
+          return label
+        }
+
+        return (
+          <Text
+            as="span"
+            className="inline-flex items-center gap-1 whitespace-nowrap"
+            variant="unstyled"
+          >
+            <Text
+              as="span"
+              className="text-base leading-none"
+              variant="unstyled"
+            >
+              {option.flag}
+            </Text>
+            <Text as="span" variant="unstyled">
+              {label}
+            </Text>
+          </Text>
+        )
+      }}
       isClearable={false}
       isDisabled={disabled}
       isLoading={loading}

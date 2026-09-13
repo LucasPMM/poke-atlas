@@ -1,8 +1,9 @@
 # poke-atlas — Project Roadmap
 
-> Project status: Phases 0–6 are committed. Phase 7 (Pokémon details) is
-> implemented locally and awaits review; Phase 8 is next. Weakness, height,
-> and weight filters remain planned extensions of Phase 6.
+> Project status: Phases 0–7 are committed. Phase 8 (type-aware detail themes)
+> and related navigation, cache, and motion fixes are implemented locally and
+> await review. Phase 9 is next. Weakness, height, and weight filters remain
+> planned extensions of Phase 6.
 
 ## 1. Project Overview
 
@@ -25,8 +26,8 @@ The project should be designed as a production-quality frontend application rath
 
 ## 2. Project Identity
 
-The chosen product and repository name is **poke-atlas**. Use this exact spelling
-in package metadata, documentation, and visible branding.
+The repository and package slug is **poke-atlas**. The visible product name is
+**Poké Atlas** in the header, footer, and localized browser title.
 
 ---
 
@@ -1558,6 +1559,19 @@ Implement:
 - Dual-type accents.
 - Accessible contrast.
 - Theme tests for every type.
+- Use the primary type hue for the detail artwork wash, type badges, stat bars,
+  and active evolution state. Add a restrained secondary wash for dual types.
+- Define light/dark color values in global theme CSS and keep the type-to-hue
+  mapping centralized. Verify badge contrast for every type in both modes.
+- Keep evolution card frames fixed during hover; only artwork may move.
+- Animate Pokémon artwork within its reserved frame and honor reduced motion.
+- Version persisted query data whenever normalized API models change, and
+  reject invalid resource IDs before sending requests.
+
+The browser title and visible brand use **Poké Atlas**; the language picker
+shows Brazil, United States, and France flags alongside locale labels. Review
+individual LottieFiles assets and their terms before adding any third-party
+animation; locally animated Pokémon artwork is the initial motion treatment.
 
 ---
 

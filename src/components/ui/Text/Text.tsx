@@ -1,11 +1,12 @@
 import clsx from 'clsx'
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 
 type TextProps = {
   as?: 'p' | 'span' | 'h1' | 'h2' | 'h3'
   children: ReactNode
   className?: string
   id?: string
+  style?: CSSProperties
   variant?: 'body' | 'muted' | 'eyebrow' | 'heading' | 'display' | 'unstyled'
 }
 
@@ -25,10 +26,11 @@ export const Text = ({
   children,
   className,
   id,
+  style,
   variant = 'body'
 }: TextProps) => {
   return (
-    <Element className={clsx(styles[variant], className)} id={id}>
+    <Element className={clsx(styles[variant], className)} id={id} style={style}>
       {children}
     </Element>
   )

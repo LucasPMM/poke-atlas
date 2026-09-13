@@ -30,8 +30,10 @@ describe('locale preference', () => {
     )
 
     expect(screen.getByRole('button').textContent).toBe('fr')
+    expect(document.title).toBe('Poké Atlas — Explorez les Pokémon')
     fireEvent.click(screen.getByRole('button'))
     expect(screen.getByRole('button').textContent).toBe('pt-BR')
+    expect(document.title).toBe('Poké Atlas — Explore Pokémon')
     expect(window.localStorage.getItem('poke-atlas-locale')).toBe('pt-BR')
   })
 

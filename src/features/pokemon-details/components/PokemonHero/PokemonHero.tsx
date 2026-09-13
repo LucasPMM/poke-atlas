@@ -5,6 +5,10 @@ import { ShouldRender } from '@/components/ui/ShouldRender'
 import { Text } from '@/components/ui/Text'
 import { getPokemonTypeLabel, useI18n } from '@/lib/i18n'
 import type { Pokemon, PokemonSpecies } from '@/models/pokemon'
+import {
+  getPokemonTypeStyle,
+  resolvePokemonTypeTheme
+} from '../../themes/pokemon-type-theme'
 
 type PokemonHeroProps = {
   pokemon: Pokemon
@@ -20,6 +24,7 @@ export const PokemonHero = ({ pokemon, species, backTo }: PokemonHeroProps) => {
       : pokemon.name
   const flavorText =
     species?.flavorTexts[locale] ?? species?.flavorTexts.en ?? null
+  const theme = resolvePokemonTypeTheme(pokemon.types)
   const formatNumber = (value: number) =>
     new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(value)
 
@@ -34,7 +39,7 @@ export const PokemonHero = ({ pokemon, species, backTo }: PokemonHeroProps) => {
       </Link>
       <div className="mt-8 grid items-center gap-8 md:grid-cols-2 md:gap-14">
         <div>
-          <Text variant="eyebrow">
+          <Text className="pokemon-accent-text" variant="eyebrow">
             {t('details.number', {
               number: String(pokemon.speciesId).padStart(4, '0')
             })}
@@ -45,8 +50,9 @@ export const PokemonHero = ({ pokemon, species, backTo }: PokemonHeroProps) => {
           <div className="mt-6 flex flex-wrap gap-2">
             {pokemon.types.map((type) => (
               <Text
-                className="rounded-full border border-line bg-surface px-4 py-2 text-sm font-medium text-ink"
+                className="pokemon-type-badge rounded-full px-4 py-2 text-sm font-medium"
                 key={type}
+                style={getPokemonTypeStyle(type)}
                 variant="unstyled"
               >
                 {getPokemonTypeLabel(type, t)}
@@ -87,10 +93,17 @@ export const PokemonHero = ({ pokemon, species, backTo }: PokemonHeroProps) => {
             </div>
           </div>
         </div>
-        <div className="flex aspect-square items-center justify-center overflow-hidden rounded-3xl bg-surface-muted">
+        <div className="pokemon-artwork-frame flex aspect-square items-center justify-center overflow-hidden rounded-3xl">
+          <ShouldRender if={theme.secondary !== null}>
+            <div
+              aria-hidden="true"
+              className="pokemon-type-swatch"
+              style={getPokemonTypeStyle(theme.secondary ?? 'normal')}
+            />
+          </ShouldRender>
           <Image
             alt={t('details.artworkAlt', { name })}
-            className="aspect-square w-full object-contain p-8 md:p-12"
+            className="pokemon-artwork-motion aspect-square w-full object-contain p-8 md:p-12"
             fallbackLabel={t('details.artworkFallback')}
             loading="eager"
             src={pokemon.artworkUrl}

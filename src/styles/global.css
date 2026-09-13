@@ -318,6 +318,106 @@ input:focus-visible {
   background: var(--semantic-action);
 }
 
+.pokemon-detail,
+.pokemon-type-badge,
+.pokemon-type-swatch {
+  --pokemon-accent: oklch(0.49 0.14 var(--pokemon-hue));
+  --pokemon-accent-ink: oklch(0.32 0.09 var(--pokemon-hue));
+  --pokemon-wash: oklch(0.94 0.045 var(--pokemon-hue));
+}
+
+:root[data-theme="dark"] .pokemon-detail,
+:root[data-theme="dark"] .pokemon-type-badge,
+:root[data-theme="dark"] .pokemon-type-swatch {
+  --pokemon-accent: oklch(0.78 0.11 var(--pokemon-hue));
+  --pokemon-accent-ink: oklch(0.9 0.065 var(--pokemon-hue));
+  --pokemon-wash: oklch(0.29 0.045 var(--pokemon-hue));
+}
+
+.pokemon-type-badge {
+  border: 1px solid color-mix(in srgb, var(--pokemon-accent) 28%, transparent);
+  background: var(--pokemon-wash);
+  color: var(--pokemon-accent-ink);
+}
+
+.pokemon-accent-text {
+  color: var(--pokemon-accent-ink);
+}
+
+.pokemon-artwork-frame {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid color-mix(in srgb, var(--pokemon-accent) 22%, transparent);
+  background: linear-gradient(
+    145deg,
+    var(--pokemon-wash),
+    var(--surface-paper)
+  );
+}
+
+.pokemon-artwork-frame::before {
+  position: absolute;
+  inset: 13%;
+  z-index: 0;
+  border: 1px solid color-mix(in srgb, var(--pokemon-accent) 30%, transparent);
+  border-radius: 50%;
+  content: "";
+}
+
+.pokemon-type-swatch {
+  position: absolute;
+  right: 5%;
+  bottom: 4%;
+  z-index: 0;
+  width: 32%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--pokemon-wash);
+  filter: blur(6px);
+}
+
+.pokemon-artwork-motion {
+  position: relative;
+  z-index: 1;
+  animation: pokemon-idle 5.5s ease-in-out infinite;
+}
+
+.pokemon-artwork-frame:hover .pokemon-artwork-motion {
+  animation: pokemon-greet 850ms ease-in-out 1;
+}
+
+.pokemon-detail .stat-meter::-webkit-meter-optimum-value {
+  background: var(--pokemon-accent);
+}
+
+.pokemon-detail .stat-meter::-moz-meter-bar {
+  background: var(--pokemon-accent);
+}
+
+.pokemon-evolution-card:hover,
+.pokemon-evolution-card:focus-visible,
+.pokemon-evolution-card[aria-current="page"] {
+  border-color: var(--pokemon-accent);
+  box-shadow: 0 0 0 1px
+    color-mix(in srgb, var(--pokemon-accent) 32%, transparent);
+}
+
+@keyframes pokemon-idle {
+  50% {
+    transform: translateY(-7px) rotate(1deg);
+  }
+}
+
+@keyframes pokemon-greet {
+  35% {
+    transform: translateY(-12px) rotate(-4deg);
+  }
+
+  70% {
+    transform: translateY(-5px) rotate(3deg);
+  }
+}
+
 .shimmer::after {
   position: absolute;
   inset: 0;
@@ -363,5 +463,12 @@ input:focus-visible {
     animation-iteration-count: 1;
     scroll-behavior: auto;
     transition-duration: 0.01ms;
+  }
+
+  .atlas-planet-main,
+  .pokemon-artwork-motion,
+  .pokemon-artwork-frame:hover .pokemon-artwork-motion,
+  .shimmer::after {
+    animation: none;
   }
 }

@@ -20,9 +20,19 @@ import {
 } from './pokemon.mapper'
 
 const normalizeIdentifier = (identifier: string | number): string => {
+  if (
+    (typeof identifier !== 'string' && typeof identifier !== 'number') ||
+    (typeof identifier === 'number' && !Number.isSafeInteger(identifier))
+  ) {
+    throw new ApiError(
+      'unknown',
+      'A valid Pokémon resource identifier is required.'
+    )
+  }
+
   const normalized = String(identifier).trim().toLowerCase()
 
-  if (normalized.length === 0) {
+  if (normalized.length === 0 || normalized === 'undefined') {
     throw new ApiError('unknown', 'A Pokémon resource identifier is required.')
   }
 

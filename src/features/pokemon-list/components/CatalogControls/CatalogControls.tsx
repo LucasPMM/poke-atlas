@@ -281,7 +281,7 @@ export const CatalogControls = ({
 
       <dialog
         aria-label={t('filters.open')}
-        className="fixed inset-x-0 bottom-0 top-auto m-0 max-h-[85vh] w-full max-w-none overflow-y-auto rounded-t-3xl border-0 bg-surface p-5 text-ink backdrop:bg-ink/50 md:hidden"
+        className="catalog-filter-dialog fixed inset-x-0 bottom-0 top-auto m-0 max-h-[85vh] w-full max-w-none overflow-y-auto rounded-t-3xl border-0 bg-surface p-5 text-ink backdrop:bg-ink/50 md:hidden"
         ref={dialogRef}
       >
         <div className="mb-6 flex items-center justify-between">

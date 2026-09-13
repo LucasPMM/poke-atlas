@@ -80,7 +80,7 @@ export const Header = () => {
           </Text>
         </Link>
         <div className="flex shrink-0 items-center gap-2">
-          <div className="w-11">
+          <div className="w-[84px]">
             <Select
               ariaLabel={t('controls.language')}
               onChange={setLocale}

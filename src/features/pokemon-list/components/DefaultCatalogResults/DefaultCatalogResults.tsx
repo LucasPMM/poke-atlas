@@ -76,13 +76,20 @@ export const DefaultCatalogResults = () => {
       <ShouldRender
         if={pokemonQuery.data !== undefined && pokemon.length === 0}
       >
-        <Text className="mt-9" variant="muted">
-          {t('list.empty')}
-        </Text>
+        <div className="mt-9 rounded-2xl bg-surface p-6">
+          <Text variant="muted">{t('list.empty')}</Text>
+          <Button
+            className="mt-5"
+            onClick={() => void pokemonQuery.refetch()}
+            variant="outline"
+          >
+            {t('list.retry')}
+          </Button>
+        </div>
       </ShouldRender>
 
       <ShouldRender if={pokemon.length > 0}>
-        <div className="mt-9 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+        <div className="catalog-results-enter mt-9 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
           {pokemon.map((entry) => (
             <PokemonCard key={entry.id} pokemon={entry} />
           ))}

@@ -7,6 +7,7 @@ import {
   pokemonTypeMembersOptions
 } from '@/api/pokemon'
 import { Button } from '@/components/ui/Button'
+import { Icon } from '@/components/ui/Icon'
 import { ShouldRender } from '@/components/ui/ShouldRender'
 import { Text } from '@/components/ui/Text'
 import { useI18n } from '@/lib/i18n'
@@ -19,9 +20,11 @@ const PAGE_SIZE = 24
 const skeletons = Array.from({ length: PAGE_SIZE }, (_, index) => index)
 
 export const FilteredCatalogResults = ({
-  filters
+  filters,
+  onClearFilters
 }: {
   filters: CatalogFilters
+  onClearFilters: () => void
 }) => {
   const { locale, t } = useI18n()
   const catalogQuery = useQuery(pokemonCatalogOptions())
@@ -117,21 +120,29 @@ export const FilteredCatalogResults = ({
       </ShouldRender>
 
       <ShouldRender if={!isPending && !isError}>
-        <Text className="mt-9" variant="muted">
-          {t('filters.resultCount', {
-            count: new Intl.NumberFormat(locale).format(results.length)
-          })}
-        </Text>
+        <div aria-live="polite">
+          <Text className="mt-9" variant="muted">
+            {t('filters.resultCount', {
+              count: new Intl.NumberFormat(locale).format(results.length)
+            })}
+          </Text>
+        </div>
       </ShouldRender>
 
       <ShouldRender if={!isPending && !isError && results.length === 0}>
-        <Text className="mt-5" variant="muted">
-          {t('filters.empty')}
-        </Text>
+        <div className="mt-5 flex flex-col items-start rounded-2xl bg-surface p-6">
+          <Icon className="text-action" name="search" size={24} />
+          <Text className="mt-4" variant="muted">
+            {t('filters.empty')}
+          </Text>
+          <Button className="mt-5" onClick={onClearFilters} variant="outline">
+            {t('filters.clearAll')}
+          </Button>
+        </div>
       </ShouldRender>
 
       <ShouldRender if={results.length > 0}>
-        <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+        <div className="catalog-results-enter mt-5 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
           {results.slice(0, visibleCount).map((entry) => (
             <PokemonCard key={entry.id} pokemon={entry} />
           ))}

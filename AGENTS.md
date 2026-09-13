@@ -18,6 +18,9 @@
 - Bump the persisted query-cache buster when normalized API models change.
   Validate resource identifiers at the API boundary so missing IDs never
   become requests to literal `undefined` paths.
+- Normalize species biology, varieties, evolution methods, and level-up moves
+  at the API boundary. Select one game-version group for move highlights and
+  show its name; avoid mixing moves from different games.
 - Keep feature code in `src/features` and reusable primitives in
   `src/components/ui`. Every reusable component gets a PascalCase directory,
   matching `.tsx` file, and `index.ts` barrel. Import through the barrel.
@@ -50,7 +53,8 @@
 - Keep the header pinned to the top without covering page content. The favicon
   must have a transparent outer background and use the brand palette.
 - Keep the header limited to the brand, language picker, and theme toggle. Make
-  both controls 44 px square, including on mobile. Scroll to the top when a
+  the language picker 84 px wide and 44 px high for its flag, code, and chevron;
+  keep the theme toggle 44 px square, including on mobile. Scroll to the top when a
   Pokémon detail route opens or its identifier changes.
 - Reserve card artwork and text geometry before images load. Keep card boxes
   stationary during hover/focus animations; artwork may scale inside its frame.
@@ -65,5 +69,9 @@
   accessible manual load action.
 - Keep mobile and desktop layouts accessible with visible focus styles,
   keyboard support, and comfortable touch targets.
+- Keep detail-section navigation compatible with hash routes and offset its
+  scroll targets below the fixed header. Load artwork in reserved frames and
+  reveal it after loading without moving surrounding cards. Give empty states
+  an actionable recovery path when one exists.
 - Never commit unless the user explicitly requests a commit after reviewing
   the exact current changes. Follow Conventional Commits when authorized.

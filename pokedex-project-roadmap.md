@@ -1,9 +1,8 @@
 # poke-atlas — Project Roadmap
 
-> Project status: Phases 0–7 are committed. Phase 8 (type-aware detail themes)
-> and related navigation, cache, and motion fixes are implemented locally and
-> await review. Phase 9 is next. Weakness, height, and weight filters remain
-> planned extensions of Phase 6.
+> Project status: Phases 0–8 are committed. Phases 9 and 10 are implemented
+> locally and await review. Phase 11 is next. Weakness, height, and weight
+> filters remain planned extensions of Phase 6.
 
 ## 1. Project Overview
 
@@ -1590,6 +1589,14 @@ Add progressively:
 
 Avoid overloading the first version.
 
+The first advanced detail pass uses the species response for gender ratio, egg
+groups, base capture rate, growth rate, and varieties. It displays up to eight
+level-up moves from a preferred recent version group and preserves game-version
+context. Evolution branches expose available trigger conditions and alternate
+methods. The flavor text remains in the hero. Keep these sections independently
+useful when optional species or evolution requests fail. Bump the persisted
+query-cache buster when the normalized model changes.
+
 ---
 
 ## Phase 10 — UX Polish
@@ -1607,6 +1614,13 @@ Add:
 - Image loading behavior.
 
 Run accessibility review.
+
+The polish pass includes a horizontally scrollable detail-section navigator
+that leaves hash routing intact, a wider language picker with a visible
+chevron, layout-matched detail skeletons, actionable catalog empty states,
+restrained filter and image transitions, and reduced-motion handling. Verify
+desktop and 320 px mobile layouts, keyboard access to the language menu,
+image loading after scrolling, and the absence of horizontal page overflow.
 
 ---
 

@@ -1,0 +1,1 @@
+export { PokemonMoves } from './PokemonMoves'

@@ -12,10 +12,12 @@ export const Image = ({
   className,
   fallbackLabel,
   onError,
+  onLoad,
   src,
   ...props
 }: ImageProps) => {
   const [failedSource, setFailedSource] = useState<string | null>(null)
+  const [loadedSource, setLoadedSource] = useState<string | null>(null)
 
   if (!src || failedSource === src) {
     return (
@@ -36,12 +38,20 @@ export const Image = ({
   return (
     <img
       alt={alt}
-      className={className}
+      className={clsx(
+        'pokemon-image',
+        className,
+        loadedSource === src ? 'opacity-100' : 'opacity-0'
+      )}
       decoding="async"
       loading="lazy"
       onError={(event) => {
         setFailedSource(src)
         onError?.(event)
+      }}
+      onLoad={(event) => {
+        setLoadedSource(src)
+        onLoad?.(event)
       }}
       src={src}
       {...props}

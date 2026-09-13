@@ -55,7 +55,7 @@ export const pokemonPersister = createAsyncStoragePersister({
 })
 
 export const pokemonPersistOptions = {
-  buster: 'poke-atlas-api-v2',
+  buster: 'poke-atlas-api-v3',
   maxAge: DAY_MS,
   persister: pokemonPersister,
   dehydrateOptions: {

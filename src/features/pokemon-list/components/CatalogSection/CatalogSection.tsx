@@ -37,6 +37,7 @@ export const CatalogSection = () => {
         <FilteredCatalogResults
           filters={filters}
           key={JSON.stringify(filters)}
+          onClearFilters={controls.clearAll}
         />
       </ShouldRender>
       <ShouldRender if={!isFiltered}>

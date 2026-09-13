@@ -26,6 +26,8 @@ const pokemon = (id: number, name: string): Pokemon => ({
   types: [],
   abilities: [],
   stats: [],
+  moves: [],
+  moveVersion: null,
   heightMeters: 1,
   weightKilograms: 10
 })
@@ -37,7 +39,12 @@ const species = (id: number, name: string): PokemonSpecies => ({
   evolutionChainId: null,
   names: { en: name },
   genera: { en: 'Mouse Pokémon' },
-  flavorTexts: { en: 'It stores electricity in its cheeks.' }
+  flavorTexts: { en: 'It stores electricity in its cheeks.' },
+  genderRate: 4,
+  eggGroups: ['ground'],
+  captureRate: 190,
+  growthRate: 'medium',
+  varieties: [{ id, name, isDefault: true }]
 })
 
 const createClient = () =>
@@ -100,12 +107,18 @@ describe('Pokémon detail navigation', () => {
         { name: 'lightning-rod', isHidden: true }
       ],
       stats: [{ name: 'hp', value: 35 }],
+      moves: [{ name: 'thunderbolt', level: 26 }],
+      moveVersion: 'scarlet-violet',
       heightMeters: 0.4,
       weightKilograms: 6
     }
     const pikachuSpecies = {
       ...species(25, 'Pikachu'),
-      evolutionChainId: 10
+      evolutionChainId: 10,
+      varieties: [
+        { id: 25, name: 'pikachu', isDefault: true },
+        { id: 10080, name: 'pikachu-rock-star', isDefault: false }
+      ]
     }
     const electric: PokemonType = {
       id: 13,
@@ -120,22 +133,24 @@ describe('Pokémon detail navigation', () => {
         id: 172,
         name: 'pichu',
         artworkUrl: '/172.png',
-        minimumLevel: null,
-        trigger: null,
+        methods: [],
         evolvesTo: [
           {
             id: 25,
             name: 'pikachu',
             artworkUrl: '/25.png',
-            minimumLevel: 16,
-            trigger: 'level-up',
+            methods: [
+              {
+                trigger: 'level-up',
+                requirements: [{ kind: 'level', value: 16 }]
+              }
+            ],
             evolvesTo: [
               {
                 id: 26,
                 name: 'raichu',
                 artworkUrl: '/26.png',
-                minimumLevel: null,
-                trigger: 'use-item',
+                methods: [{ trigger: 'use-item', requirements: [] }],
                 evolvesTo: []
               }
             ]
@@ -177,6 +192,13 @@ describe('Pokémon detail navigation', () => {
     )
     expect(screen.getByText('Ground · 2×')).toBeInTheDocument()
     expect(screen.getByText('Level 16')).toBeInTheDocument()
+    expect(screen.getByText('Female 50% · Male 50%')).toBeInTheDocument()
+    expect(screen.getByText('190 / 255')).toBeInTheDocument()
+    expect(screen.getByText('Field')).toBeInTheDocument()
+    expect(screen.getByText(/thunderbolt/i)).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: /pikachu rock star/i })
+    ).toHaveAttribute('href', '/pokemon/10080')
     expect(screen.getByRole('link', { name: /raichu/i })).toHaveAttribute(
       'href',
       '/pokemon/26'
@@ -214,6 +236,33 @@ describe('Pokémon detail navigation', () => {
       screen.getByRole('heading', { name: 'pikachu rock star' })
     ).toBeInTheDocument()
     expect(screen.getByText('Mouse Pokémon')).toBeInTheDocument()
+  })
+
+  it('labels a species with no gender correctly', () => {
+    vi.stubGlobal('scrollTo', vi.fn())
+    const client = createClient()
+    client.setQueryData(
+      pokemonDetailsOptions('132').queryKey,
+      pokemon(132, 'ditto')
+    )
+    client.setQueryData(pokemonSpeciesOptions(132).queryKey, {
+      ...species(132, 'Ditto'),
+      genderRate: -1
+    })
+
+    render(
+      <QueryClientProvider client={client}>
+        <I18nProvider>
+          <MemoryRouter initialEntries={['/pokemon/132']}>
+            <Routes>
+              <Route element={<PokemonDetailsPage />} path="/pokemon/:id" />
+            </Routes>
+          </MemoryRouter>
+        </I18nProvider>
+      </QueryClientProvider>
+    )
+
+    expect(screen.getByText('Genderless')).toBeInTheDocument()
   })
 
   it('keeps the profile visible when type data fails and offers a section retry', async () => {

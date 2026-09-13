@@ -31,6 +31,48 @@ const pokemonFixture: PokemonDto = {
     { slot: 1, is_hidden: false, ability: named('static', 9) }
   ],
   stats: [{ base_stat: 35, stat: named('hp', 1) }],
+  moves: [
+    {
+      move: named('thunderbolt', 85),
+      version_group_details: [
+        {
+          level_learned_at: 26,
+          move_learn_method: named('level-up', 1),
+          version_group: named('scarlet-violet', 25)
+        },
+        {
+          level_learned_at: 21,
+          move_learn_method: named('level-up', 1),
+          version_group: named('sword-shield', 20)
+        },
+        {
+          level_learned_at: 30,
+          move_learn_method: named('level-up', 1),
+          version_group: named('blue-japan', 46)
+        }
+      ]
+    },
+    {
+      move: named('quick-attack', 98),
+      version_group_details: [
+        {
+          level_learned_at: 11,
+          move_learn_method: named('level-up', 1),
+          version_group: named('scarlet-violet', 25)
+        }
+      ]
+    },
+    {
+      move: named('surf', 57),
+      version_group_details: [
+        {
+          level_learned_at: 0,
+          move_learn_method: named('machine', 4),
+          version_group: named('scarlet-violet', 25)
+        }
+      ]
+    }
+  ],
   sprites: {
     front_default: 'https://example.com/sprite.png',
     other: {
@@ -53,6 +95,11 @@ describe('Pokémon response mapping', () => {
       weightKilograms: 6,
       stats: [{ name: 'hp', value: 35 }]
     })
+    expect(pokemon.moves).toEqual([
+      { name: 'quick-attack', level: 11 },
+      { name: 'thunderbolt', level: 26 }
+    ])
+    expect(pokemon.moveVersion).toBe('scarlet-violet')
     expect(pokemon.abilities).toEqual([
       { name: 'static', isHidden: false },
       { name: 'lightning-rod', isHidden: true }
@@ -125,6 +172,14 @@ describe('Pokémon response mapping', () => {
           flavor_text: 'It stores\n electricity\f in its cheeks.',
           language: named('en', 9)
         }
+      ],
+      gender_rate: 4,
+      egg_groups: [named('field', 5)],
+      capture_rate: 190,
+      growth_rate: named('medium', 2),
+      varieties: [
+        { is_default: true, pokemon: named('pikachu', 25) },
+        { is_default: false, pokemon: named('pikachu-rock-star', 10080) }
       ]
     }
 
@@ -133,7 +188,15 @@ describe('Pokémon response mapping', () => {
       evolutionChainId: 10,
       names: { en: 'Pikachu', fr: 'Pikachu' },
       genera: { en: 'Mouse Pokémon' },
-      flavorTexts: { en: 'It stores electricity in its cheeks.' }
+      flavorTexts: { en: 'It stores electricity in its cheeks.' },
+      genderRate: 4,
+      eggGroups: ['field'],
+      captureRate: 190,
+      growthRate: 'medium',
+      varieties: [
+        { id: 25, name: 'pikachu', isDefault: true },
+        { id: 10080, name: 'pikachu-rock-star', isDefault: false }
+      ]
     })
   })
 
@@ -165,14 +228,34 @@ describe('Pokémon response mapping', () => {
           {
             species: named('vaporeon', 134),
             evolution_details: [
-              { min_level: null, trigger: named('use-item', 3) }
+              {
+                min_level: null,
+                trigger: named('use-item', 3),
+                item: named('water-stone', 84)
+              }
             ],
             evolves_to: []
           },
           {
             species: named('jolteon', 135),
             evolution_details: [
-              { min_level: null, trigger: named('use-item', 3) }
+              {
+                min_level: null,
+                trigger: named('use-item', 3),
+                item: named('thunder-stone', 83)
+              }
+            ],
+            evolves_to: []
+          },
+          {
+            species: named('sylveon', 700),
+            evolution_details: [
+              {
+                min_level: null,
+                trigger: named('level-up', 1),
+                min_affection: 2,
+                known_move_type: named('fairy', 18)
+              }
             ],
             evolves_to: []
           }
@@ -182,6 +265,21 @@ describe('Pokémon response mapping', () => {
 
     expect(
       mapEvolutionChain(chain).root.evolvesTo.map(({ name }) => name)
-    ).toEqual(['vaporeon', 'jolteon'])
+    ).toEqual(['vaporeon', 'jolteon', 'sylveon'])
+    expect(mapEvolutionChain(chain).root.evolvesTo[0]?.methods).toEqual([
+      {
+        trigger: 'use-item',
+        requirements: [{ kind: 'item', value: 'water-stone' }]
+      }
+    ])
+    expect(mapEvolutionChain(chain).root.evolvesTo[2]?.methods).toEqual([
+      {
+        trigger: 'level-up',
+        requirements: [
+          { kind: 'affection', value: 2 },
+          { kind: 'knownMoveType', value: 'fairy' }
+        ]
+      }
+    ])
   })
 })

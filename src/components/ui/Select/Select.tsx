@@ -1,4 +1,5 @@
 import ReactSelect, { type SingleValue } from 'react-select'
+import { Icon } from '../Icon'
 import { Text } from '../Text'
 
 export type SelectOption<T extends string> = {
@@ -42,11 +43,11 @@ export const Select = <T extends string>({
     <ReactSelect<SelectOption<T>, false>
       aria-label={ariaLabel}
       className={
-        variant === 'compact' ? 'w-11 shrink-0 text-sm' : 'w-full text-sm'
+        variant === 'compact' ? 'w-[84px] shrink-0 text-sm' : 'w-full text-sm'
       }
       classNames={{
         control: () =>
-          `${variant === 'compact' ? 'h-11 w-11' : 'min-h-11 w-full px-3'} rounded-lg border border-line bg-surface shadow-none transition-colors hover:border-action focus-within:border-action focus-within:ring-2 focus-within:ring-action/20`,
+          `${variant === 'compact' ? 'h-11 w-[84px]' : 'min-h-11 w-full px-3'} rounded-lg border border-line bg-surface shadow-none transition-colors hover:border-action focus-within:border-action focus-within:ring-2 focus-within:ring-action/20`,
         menu: () => 'z-30 rounded-lg border border-line bg-surface shadow-lg',
         menuList: () => 'p-1',
         option: (state) =>
@@ -88,6 +89,13 @@ export const Select = <T extends string>({
             <Text as="span" variant="unstyled">
               {label}
             </Text>
+            {context === 'value' && variant === 'compact' ? (
+              <Icon
+                className="ml-0.5 shrink-0 text-muted"
+                name="chevronDown"
+                size={12}
+              />
+            ) : null}
           </Text>
         )
       }}

@@ -31,10 +31,18 @@ export const PokemonDetailsSkeleton = () => {
         </div>
         <Skeleton className="aspect-square w-full rounded-3xl" />
       </div>
+      <div className="mt-12 flex gap-2 overflow-hidden" aria-hidden="true">
+        {[0, 1, 2, 3].map((index) => (
+          <Skeleton className="h-11 w-28 shrink-0 rounded-lg" key={index} />
+        ))}
+      </div>
       <div className="mt-12 grid gap-5 lg:grid-cols-2">
         <Skeleton className="h-64 rounded-3xl" />
         <Skeleton className="h-96 rounded-3xl" />
         <Skeleton className="h-56 rounded-3xl lg:col-span-2" />
+        <Skeleton className="h-72 rounded-3xl lg:col-span-2" />
+        <Skeleton className="h-64 rounded-3xl" />
+        <Skeleton className="h-64 rounded-3xl" />
         <Skeleton className="h-72 rounded-3xl lg:col-span-2" />
       </div>
     </section>

@@ -121,6 +121,48 @@ input:focus-visible {
   scroll-margin-top: calc(var(--header-height) + 24px);
 }
 
+.detail-section,
+#evolution,
+#biology,
+#moves,
+#varieties {
+  scroll-margin-top: calc(var(--header-height) + 84px);
+}
+
+.pokemon-image {
+  transition:
+    opacity 180ms ease-out,
+    transform 200ms ease-out;
+}
+
+.catalog-results-enter {
+  animation: catalog-reveal 200ms ease-out both;
+}
+
+.catalog-filter-dialog[open] {
+  animation: filter-sheet-in 220ms ease-out both;
+}
+
+@keyframes catalog-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes filter-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .brand-mark {
   position: relative;
   display: inline-flex;
@@ -466,9 +508,15 @@ input:focus-visible {
   }
 
   .atlas-planet-main,
+  .catalog-results-enter,
+  .catalog-filter-dialog[open],
   .pokemon-artwork-motion,
   .pokemon-artwork-frame:hover .pokemon-artwork-motion,
   .shimmer::after {
     animation: none;
+  }
+
+  .pokemon-image {
+    transition: none;
   }
 }

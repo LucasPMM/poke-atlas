@@ -4,16 +4,31 @@ import {
   pokemonSpeciesOptions,
   pokemonTypeOptions
 } from '@/api/pokemon'
+import { Button } from '@/components/ui/Button'
+import { useI18n } from '@/lib/i18n'
 import type { Pokemon } from '@/models/pokemon'
 import {
   getPokemonTypeStyle,
   resolvePokemonTypeTheme
 } from '../../themes/pokemon-type-theme'
 import { EvolutionLine } from '../EvolutionLine'
+import { PokemonBiology } from '../PokemonBiology'
 import { PokemonHero } from '../PokemonHero'
+import { PokemonMoves } from '../PokemonMoves'
 import { PokemonProfile } from '../PokemonProfile'
 import { PokemonStats } from '../PokemonStats'
+import { PokemonVarieties } from '../PokemonVarieties'
 import { TypeMatchups } from '../TypeMatchups'
+
+const detailSections = [
+  { id: 'profile', label: 'details.profile' },
+  { id: 'stats', label: 'details.stats' },
+  { id: 'matchups', label: 'details.matchups' },
+  { id: 'evolution', label: 'details.evolution' },
+  { id: 'biology', label: 'details.biology' },
+  { id: 'moves', label: 'details.moves' },
+  { id: 'varieties', label: 'details.varieties' }
+] as const
 
 export const PokemonDetailsContent = ({
   pokemon,
@@ -22,6 +37,7 @@ export const PokemonDetailsContent = ({
   pokemon: Pokemon
   backTo: string
 }) => {
+  const { t } = useI18n()
   const speciesQuery = useQuery(pokemonSpeciesOptions(pokemon.speciesId))
   const typeQueries = useQueries({
     queries: pokemon.types.map((type) => pokemonTypeOptions(type))
@@ -64,16 +80,41 @@ export const PokemonDetailsContent = ({
         pokemon={pokemon}
         species={speciesQuery.data}
       />
+      <nav
+        aria-label={t('details.sections')}
+        className="sticky top-[var(--header-height)] z-30 mb-5 border-y border-line bg-canvas/95 backdrop-blur-sm"
+      >
+        <div className="page-container flex gap-1 overflow-x-auto py-2">
+          {detailSections.map(({ id, label }) => (
+            <Button
+              className="shrink-0 whitespace-nowrap px-3 text-sm"
+              key={id}
+              onClick={() =>
+                document
+                  .getElementById(id)
+                  ?.scrollIntoView({ behavior: 'auto' })
+              }
+              variant="ghost"
+            >
+              {t(label)}
+            </Button>
+          ))}
+        </div>
+      </nav>
       <div className="page-container grid gap-5 lg:grid-cols-2">
-        <PokemonProfile
-          isError={speciesQuery.isError}
-          isPending={speciesQuery.isPending}
-          pokemon={pokemon}
-          retry={() => void speciesQuery.refetch()}
-          species={speciesQuery.data}
-        />
-        <PokemonStats stats={pokemon.stats} />
-        <div className="lg:col-span-2">
+        <div className="detail-section" id="profile">
+          <PokemonProfile
+            isError={speciesQuery.isError}
+            isPending={speciesQuery.isPending}
+            pokemon={pokemon}
+            retry={() => void speciesQuery.refetch()}
+            species={speciesQuery.data}
+          />
+        </div>
+        <div className="detail-section" id="stats">
+          <PokemonStats stats={pokemon.stats} />
+        </div>
+        <div className="detail-section lg:col-span-2" id="matchups">
           <TypeMatchups
             isError={isTypeError}
             isPending={isTypePending && !isTypeError}
@@ -81,7 +122,7 @@ export const PokemonDetailsContent = ({
             types={types}
           />
         </div>
-        <div className="lg:col-span-2">
+        <div className="detail-section lg:col-span-2">
           <EvolutionLine
             backTo={backTo}
             chain={evolutionQuery.data}
@@ -92,6 +133,27 @@ export const PokemonDetailsContent = ({
               (chainId !== null && evolutionQuery.isPending)
             }
             retry={retryEvolution}
+          />
+        </div>
+        <div className="detail-section">
+          <PokemonBiology
+            isError={speciesQuery.isError}
+            isPending={speciesQuery.isPending}
+            retry={() => void speciesQuery.refetch()}
+            species={speciesQuery.data}
+          />
+        </div>
+        <div className="detail-section">
+          <PokemonMoves pokemon={pokemon} />
+        </div>
+        <div className="detail-section lg:col-span-2">
+          <PokemonVarieties
+            backTo={backTo}
+            currentPokemonId={pokemon.id}
+            isError={speciesQuery.isError}
+            isPending={speciesQuery.isPending}
+            retry={() => void speciesQuery.refetch()}
+            species={speciesQuery.data}
           />
         </div>
       </div>

@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import type { CSSProperties, ReactNode } from 'react'
 
 type TextProps = {
-  as?: 'p' | 'span' | 'h1' | 'h2' | 'h3'
+  as?: 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'dt' | 'dd'
   children: ReactNode
   className?: string
   id?: string

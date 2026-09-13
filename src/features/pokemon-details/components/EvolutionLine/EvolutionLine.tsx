@@ -3,8 +3,12 @@ import { Image } from '@/components/ui/Image'
 import { ShouldRender } from '@/components/ui/ShouldRender'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { Text } from '@/components/ui/Text'
-import { type TranslationKey, useI18n } from '@/lib/i18n'
-import type { EvolutionChain, EvolutionNode } from '@/models/pokemon'
+import { getPokemonTypeLabel, type TranslationKey, useI18n } from '@/lib/i18n'
+import type {
+  EvolutionChain,
+  EvolutionNode,
+  EvolutionRequirement
+} from '@/models/pokemon'
 import { SectionError } from '../SectionError'
 
 type EvolutionLineProps = {
@@ -22,6 +26,42 @@ const triggerLabels: Record<string, TranslationKey> = {
   'use-item': 'details.evolutionItem'
 }
 
+const requirementLabels: Record<EvolutionRequirement['kind'], TranslationKey> =
+  {
+    level: 'details.evolutionLevel',
+    item: 'details.evolutionRequiresItem',
+    heldItem: 'details.evolutionHeldItem',
+    happiness: 'details.evolutionHappiness',
+    affection: 'details.evolutionAffection',
+    beauty: 'details.evolutionBeauty',
+    time: 'details.evolutionTime',
+    knownMove: 'details.evolutionKnownMove',
+    knownMoveType: 'details.evolutionKnownMoveType',
+    location: 'details.evolutionLocation',
+    gender: 'details.evolutionGender',
+    specialRock: 'details.evolutionSpecialRock',
+    rain: 'details.evolutionRain',
+    multiplayer: 'details.evolutionMultiplayer',
+    partySpecies: 'details.evolutionPartySpecies',
+    partyType: 'details.evolutionPartyType',
+    relativeStats: 'details.evolutionRelativeStats',
+    tradeSpecies: 'details.evolutionTradeSpecies',
+    upsideDown: 'details.evolutionUpsideDown',
+    region: 'details.evolutionRegion',
+    baseForm: 'details.evolutionBaseForm',
+    evolvedForm: 'details.evolutionEvolvedForm',
+    usedMove: 'details.evolutionUsedMove',
+    moveCount: 'details.evolutionMoveCount',
+    steps: 'details.evolutionSteps',
+    damageTaken: 'details.evolutionDamageTaken'
+  }
+
+const timeLabels: Record<string, TranslationKey> = {
+  day: 'details.evolutionDay',
+  night: 'details.evolutionNight',
+  dusk: 'details.evolutionDusk'
+}
+
 const EvolutionBranch = ({
   node,
   currentSpeciesId,
@@ -32,14 +72,36 @@ const EvolutionBranch = ({
   backTo: string
 }) => {
   const { t } = useI18n()
-  const triggerLabel = node.trigger
-    ? (triggerLabels[node.trigger] ?? 'details.evolutionSpecial')
-    : 'details.evolutionSpecial'
-  const method =
-    node.minimumLevel !== null
-      ? t('details.evolutionLevel', { level: node.minimumLevel })
-      : t(triggerLabel)
   const name = node.name.replaceAll('-', ' ')
+  const formatRequirement = ({ kind, value }: EvolutionRequirement) => {
+    if (kind === 'gender') {
+      return value === 1
+        ? t('details.evolutionFemale')
+        : t('details.evolutionMale')
+    }
+
+    if (kind === 'relativeStats') {
+      return t(
+        value === 1
+          ? 'details.evolutionAttackGreater'
+          : value === -1
+            ? 'details.evolutionDefenseGreater'
+            : 'details.evolutionStatsEqual'
+      )
+    }
+
+    const timeLabel = kind === 'time' ? timeLabels[String(value)] : undefined
+    const readableValue = timeLabel
+      ? t(timeLabel)
+      : kind === 'knownMoveType' || kind === 'partyType'
+        ? getPokemonTypeLabel(String(value), t)
+        : String(value).replaceAll('-', ' ')
+
+    return t(requirementLabels[kind], {
+      level: value,
+      value: readableValue
+    })
+  }
 
   return (
     <li
@@ -49,13 +111,41 @@ const EvolutionBranch = ({
           : 'flex min-w-28 flex-col items-center sm:min-w-36'
       }
     >
-      <ShouldRender if={node.trigger !== null || node.minimumLevel !== null}>
-        <Text
-          className="mb-3 rounded-full bg-surface-muted px-3 py-1 text-xs font-medium text-muted"
-          variant="unstyled"
-        >
-          {method}
-        </Text>
+      <ShouldRender if={node.methods.length > 0}>
+        <div className="mb-3 flex max-w-44 flex-col items-center gap-2 text-center">
+          {node.methods.map((method, methodIndex) => (
+            <div
+              className="flex flex-wrap justify-center gap-1"
+              key={`${method.trigger}-${method.requirements.map(({ kind, value }) => `${kind}:${value}`).join('|')}`}
+            >
+              <ShouldRender if={methodIndex > 0}>
+                <Text className="w-full text-xs" variant="muted">
+                  {t('details.evolutionOr')}
+                </Text>
+              </ShouldRender>
+              <Text
+                className="rounded-full bg-surface-muted px-2 py-1 text-xs font-medium text-muted"
+                variant="unstyled"
+              >
+                {t(
+                  method.trigger
+                    ? (triggerLabels[method.trigger] ??
+                        'details.evolutionSpecial')
+                    : 'details.evolutionSpecial'
+                )}
+              </Text>
+              {method.requirements.map((requirement) => (
+                <Text
+                  className="rounded-full bg-surface-muted px-2 py-1 text-xs font-medium text-muted"
+                  key={`${requirement.kind}-${requirement.value}`}
+                  variant="unstyled"
+                >
+                  {formatRequirement(requirement)}
+                </Text>
+              ))}
+            </div>
+          ))}
+        </div>
       </ShouldRender>
       <Link
         aria-current={node.id === currentSpeciesId ? 'page' : undefined}
@@ -107,7 +197,7 @@ export const EvolutionLine = ({
   const { t } = useI18n()
 
   return (
-    <section className="rounded-3xl bg-surface p-6 md:p-8">
+    <section className="rounded-3xl bg-surface p-6 md:p-8" id="evolution">
       <Text
         as="h2"
         className="font-display text-2xl font-medium md:text-3xl"

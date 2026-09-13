@@ -23,6 +23,8 @@ remaining validation and release phases.
 pnpm install
 pnpm dev
 pnpm check
+pnpm test:coverage
+pnpm test:e2e
 pnpm build
 ```
 
@@ -36,8 +38,10 @@ Read [AGENTS.md](AGENTS.md), the [roadmap](pokedex-project-roadmap.md), and
 [DESIGN.md](DESIGN.md) before implementation. Runtime copy lives in one typed
 catalog under `src/lib/i18n`; all three locales must retain identical keys.
 PokéAPI responses are normalized in `src/api` before they reach UI code. Live
-text filters use `useDebouncedValue` with a 300 ms default; the hero's explicit
-search submission navigates immediately and issues no query while typing.
+text filters use `useDebouncedValue` with a 300 ms default. The catalog input
+keeps its draft state isolated so typing does not rerender result cards. The
+hero's explicit search submission navigates immediately and issues no query
+while typing.
 Catalog search, filters, and sorting live in the URL. The unfiltered view uses
 infinite PokéAPI pages; a filtered view loads the lightweight Pokémon catalog
 and relevant membership lists, then intersects and sorts them in the client.
@@ -63,6 +67,10 @@ fixed frames; third-party Lottie animations can be reviewed individually later.
 
 The published site link and final desktop/mobile screenshots will be added
 here after the release is deployed and visually verified.
+
+The CI workflow runs the same checks, coverage, production build, and mocked
+desktop/mobile Playwright journeys on pull requests and pushes to `main`.
+Coverage must meet 85% statements, 80% branches, 85% functions, and 85% lines.
 
 ## GitHub repository metadata
 

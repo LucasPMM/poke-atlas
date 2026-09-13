@@ -11,11 +11,13 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -b --pretty false",
+    "typecheck": "tsc -b --pretty false && tsc -p tsconfig.e2e.json --pretty false",
     "format": "biome check --write .",
     "format:check": "biome format .",
     "lint": "biome lint . && node scripts/check-code-conventions.mjs",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
     "check": "pnpm typecheck && pnpm lint && pnpm test && pnpm format:check"
   },
   "dependencies": {
@@ -36,6 +38,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.12",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/vite": "^4.1.12",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.0",
@@ -43,6 +46,7 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^5.0.0",
+    "@vitest/coverage-v8": "3.2.7",
     "jsdom": "^26.1.0",
     "tailwindcss": "^4.1.12",
     "typescript": "^5.9.2",

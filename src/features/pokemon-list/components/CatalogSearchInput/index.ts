@@ -1,0 +1,1 @@
+export { CatalogSearchInput } from './CatalogSearchInput'

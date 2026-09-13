@@ -1,7 +1,7 @@
 # poke-atlas — Project Roadmap
 
-> Project status: Phases 0–8 are committed. Phases 9 and 10 are implemented
-> locally and await review. Phase 11 is next. Weakness, height, and weight
+> Project status: Phases 0–10 are committed. Phases 11 and 12 are implemented
+> locally and await review. Phase 13 is next. Weakness, height, and weight
 > filters remain planned extensions of Phase 6.
 
 ## 1. Project Overview
@@ -1452,6 +1452,8 @@ Cover every pagination state and observer transition.
 - Preserve search in navigation state or URL.
 - Search the complete catalog rather than only already-loaded infinite pages.
 - Keep text drafts local and sync trimmed search to the URL after 300 ms.
+- Keep the draft input in its own component so typing does not rerender the
+  catalog grid; only a committed URL change refreshes catalog results.
 - Preserve active search and filters when returning from a Pokémon detail page.
 
 ### Tests
@@ -1637,6 +1639,10 @@ Expand tests across:
 - E2E workflows.
 
 Review missing branches instead of blindly increasing coverage numbers.
+Use deterministic mocked PokéAPI journeys in desktop and mobile Chromium for
+loading, search, filters, details, return navigation, and API failures. Keep
+E2E TypeScript in the `pnpm typecheck` command.
+Enforce the suggested 85/80/85/85 coverage thresholds in CI.
 
 ---
 
@@ -1655,6 +1661,8 @@ Validate:
 - E2E.
 
 The same commands should work locally and in CI.
+The workflow runs on pushes to `main` and pull requests, uses a frozen pnpm
+lockfile, and uploads coverage and Playwright diagnostics after failures.
 
 ---
 

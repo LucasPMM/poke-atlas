@@ -6,7 +6,6 @@ import { Icon } from '@/components/ui/Icon'
 import { Select, type SelectOption } from '@/components/ui/Select'
 import { ShouldRender } from '@/components/ui/ShouldRender'
 import { Text } from '@/components/ui/Text'
-import { TextInput } from '@/components/ui/TextInput'
 import {
   getPokemonTypeLabel,
   POKEMON_TYPES,
@@ -18,14 +17,13 @@ import {
   type CatalogSort,
   SORT_VALUES
 } from '../../catalog-filters'
+import { CatalogSearchInput } from '../CatalogSearchInput'
 
 type FilterKey = 'search' | 'type' | 'generation' | 'ability' | 'sort'
 type ChipKey = Exclude<FilterKey, 'sort'>
 type CatalogControlsProps = {
   filters: CatalogFilters
-  searchDraft: string
-  setSearchDraft: (value: string) => void
-  setFilter: (key: FilterKey, value: string) => void
+  setFilter: (key: FilterKey, value: string, replace?: boolean) => void
   clearFilter: (key: ChipKey) => void
   clearAll: () => void
 }
@@ -158,8 +156,6 @@ const FilterFields = ({
 
 export const CatalogControls = ({
   filters,
-  searchDraft,
-  setSearchDraft,
   setFilter,
   clearFilter,
   clearAll
@@ -205,25 +201,10 @@ export const CatalogControls = ({
   return (
     <div className="mt-9">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
-        <div className="flex min-w-0 flex-1 items-end gap-2">
-          <TextInput
-            id="catalog-search"
-            label={t('filters.search')}
-            onChange={(event) => setSearchDraft(event.target.value)}
-            placeholder={t('search.placeholder')}
-            type="search"
-            value={searchDraft}
-          />
-          <Button
-            aria-label={t('filters.clearSearch')}
-            className="!h-12 !w-12 shrink-0 !px-0"
-            disabled={searchDraft.length === 0}
-            onClick={() => setSearchDraft('')}
-            variant="outline"
-          >
-            <Icon name="x" size={18} />
-          </Button>
-        </div>
+        <CatalogSearchInput
+          onCommit={(value) => setFilter('search', value, true)}
+          search={filters.search}
+        />
         <Button
           className="md:hidden"
           onClick={() => dialogRef.current?.showModal()}

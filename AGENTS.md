@@ -33,7 +33,9 @@
   final view; keep the shared Skeleton as the primitive.
 - Keep text-filter drafts local and debounce query/filter propagation (300 ms
   by default). A keystroke must not trigger one API request per character;
-  explicit form submissions and select changes may apply immediately.
+  explicit form submissions and select changes may apply immediately. Isolate
+  the controlled draft input from catalog rendering so repeated keystrokes do
+  not rerender the card grid or feel delayed.
 - Keep catalog search, filters, and sorting in URL parameters so views can be
   shared and restored on browser navigation. Search the full catalog, compose
   membership filters in the data layer, and preserve the filtered URL when
@@ -72,6 +74,11 @@
 - Keep detail-section navigation compatible with hash routes and offset its
   scroll targets below the fixed header. Load artwork in reserved frames and
   reveal it after loading without moving surrounding cards. Give empty states
-  an actionable recovery path when one exists.
+  an actionable recovery path when one exists. Interactive section controls
+  must show a pointer cursor.
+- Run `pnpm test:coverage` to review uncovered branches and `pnpm test:e2e`
+  for mocked desktop/mobile journeys when changing core behavior. CI must run
+  frozen installation, `pnpm check`, coverage, build, and Playwright tests with
+  the same scripts used locally.
 - Never commit unless the user explicitly requests a commit after reviewing
   the exact current changes. Follow Conventional Commits when authorized.

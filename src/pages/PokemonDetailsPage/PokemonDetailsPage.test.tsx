@@ -1,5 +1,11 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor
+} from '@testing-library/react'
 import { Link, MemoryRouter, Route, Routes } from 'react-router'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
@@ -206,6 +212,40 @@ describe('Pokémon detail navigation', () => {
     expect(
       screen.getByRole('link', { name: 'Back to collection' })
     ).toHaveAttribute('href', '/?search=pika')
+    const profile = document.getElementById('profile')
+    const scrollIntoView = vi.fn()
+    Object.defineProperty(profile, 'scrollIntoView', { value: scrollIntoView })
+    fireEvent.click(screen.getByRole('button', { name: 'Profile' }))
+    expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'auto' })
+  })
+
+  it('shows a loading shell and a recoverable not-found state', async () => {
+    vi.stubGlobal('scrollTo', vi.fn())
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(new Response(null, { status: 404 }))
+    vi.stubGlobal('fetch', fetchMock)
+
+    render(
+      <QueryClientProvider client={createClient()}>
+        <I18nProvider>
+          <MemoryRouter initialEntries={['/pokemon/999999']}>
+            <Routes>
+              <Route element={<PokemonDetailsPage />} path="/pokemon/:id" />
+            </Routes>
+          </MemoryRouter>
+        </I18nProvider>
+      </QueryClientProvider>
+    )
+
+    expect(screen.getByRole('status')).toHaveTextContent('Loading Pokémon')
+    expect(
+      await screen.findByRole('heading', {
+        name: 'This Pokémon was not found.'
+      })
+    ).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2))
   })
 
   it('keeps an alternate form name while loading the shared species record', () => {

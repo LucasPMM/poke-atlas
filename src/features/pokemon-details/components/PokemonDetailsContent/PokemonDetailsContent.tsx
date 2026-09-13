@@ -87,7 +87,7 @@ export const PokemonDetailsContent = ({
         <div className="page-container flex gap-1 overflow-x-auto py-2">
           {detailSections.map(({ id, label }) => (
             <Button
-              className="shrink-0 whitespace-nowrap px-3 text-sm"
+              className="shrink-0 cursor-pointer whitespace-nowrap px-3 text-sm"
               key={id}
               onClick={() =>
                 document

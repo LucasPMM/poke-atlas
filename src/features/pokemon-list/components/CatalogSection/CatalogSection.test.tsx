@@ -272,6 +272,57 @@ describe('CatalogSection', () => {
     expect(screen.getByRole('link', { name: /bulbasaur/i })).toBeInTheDocument()
   })
 
+  it('clears a committed search immediately from the text-field action', () => {
+    renderCatalog(pokemonPage(1, 'bulbasaur', null), '/?search=pika', [
+      { id: 1, name: 'bulbasaur', artworkUrl: '/1.png' },
+      { id: 25, name: 'pikachu', artworkUrl: '/25.png' }
+    ])
+
+    fireEvent.click(screen.getByRole('button', { name: 'Clear search' }))
+    expect(
+      screen.getByRole('searchbox', { name: 'Search the collection' })
+    ).toHaveValue('')
+    expect(screen.getByRole('link', { name: /bulbasaur/i })).toBeInTheDocument()
+  })
+
+  it('reveals filtered results in accessible batches of 24', () => {
+    vi.stubGlobal('IntersectionObserver', undefined)
+    const catalog = Array.from({ length: 26 }, (_, index) => ({
+      id: index + 1,
+      name: `pokemon-${index + 1}`,
+      artworkUrl: `/artwork/${index + 1}.png`
+    }))
+    renderCatalog(undefined, '/?sort=name-asc', catalog)
+
+    expect(screen.getAllByRole('link', { name: /pokemon \d+/i })).toHaveLength(
+      24
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Load more' }))
+    expect(screen.getAllByRole('link', { name: /pokemon \d+/i })).toHaveLength(
+      26
+    )
+  })
+
+  it('retries a failed filtered catalog without dropping the active URL search', async () => {
+    vi.mocked(getPokemonCatalog)
+      .mockRejectedValueOnce(new Error('temporary outage'))
+      .mockResolvedValueOnce([
+        { id: 25, name: 'pikachu', artworkUrl: '/25.png' }
+      ])
+    renderCatalog(pokemonPage(1, 'bulbasaur', null), '/?search=pika')
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      "We couldn't apply these filters."
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
+    expect(
+      await screen.findByRole('link', { name: /pikachu/i })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('searchbox', { name: 'Search the collection' })
+    ).toHaveValue('pika')
+  })
+
   it('combines type, generation, and ability filters and clears them', () => {
     const catalog = [
       { id: 1, name: 'bulbasaur', artworkUrl: '/1.png' },

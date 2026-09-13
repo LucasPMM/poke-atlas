@@ -8,16 +8,42 @@ import {
   waitFor
 } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
-import { afterEach, describe, expect, it, vi } from 'vitest'
-import { pokemonInfiniteListOptions } from '@/api/pokemon'
-import { getPokemonListPage } from '@/api/pokemon/pokemon.api'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import {
+  pokemonAbilityMembersOptions,
+  pokemonCatalogOptions,
+  pokemonGenerationMembersOptions,
+  pokemonInfiniteListOptions,
+  pokemonTypeMembersOptions
+} from '@/api/pokemon'
+import {
+  getPokemonAbilityMembers,
+  getPokemonAbilityNames,
+  getPokemonCatalog,
+  getPokemonGenerationMembers,
+  getPokemonListPage,
+  getPokemonTypeMembers
+} from '@/api/pokemon/pokemon.api'
 import { I18nProvider } from '@/lib/i18n'
-import type { PokemonListPage } from '@/models/pokemon'
+import type { PokemonListPage, PokemonSummary } from '@/models/pokemon'
 import { CatalogSection } from './CatalogSection'
 
 vi.mock('@/api/pokemon/pokemon.api', () => ({
-  getPokemonListPage: vi.fn()
+  getPokemonListPage: vi.fn(),
+  getPokemonAbilityNames: vi.fn(),
+  getPokemonCatalog: vi.fn(),
+  getPokemonTypeMembers: vi.fn(),
+  getPokemonGenerationMembers: vi.fn(),
+  getPokemonAbilityMembers: vi.fn()
 }))
+
+beforeEach(() => {
+  vi.mocked(getPokemonAbilityNames).mockResolvedValue([])
+  vi.mocked(getPokemonCatalog).mockResolvedValue([])
+  vi.mocked(getPokemonTypeMembers).mockResolvedValue([])
+  vi.mocked(getPokemonGenerationMembers).mockResolvedValue([])
+  vi.mocked(getPokemonAbilityMembers).mockResolvedValue([])
+})
 
 afterEach(() => {
   cleanup()
@@ -25,7 +51,11 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 
-const renderCatalog = (page?: PokemonListPage) => {
+const renderCatalog = (
+  page?: PokemonListPage,
+  path = '/',
+  catalog?: Array<PokemonSummary>
+) => {
   const client = new QueryClient({
     defaultOptions: { queries: { retry: false } }
   })
@@ -37,10 +67,14 @@ const renderCatalog = (page?: PokemonListPage) => {
     })
   }
 
+  if (catalog !== undefined) {
+    client.setQueryData(pokemonCatalogOptions().queryKey, catalog)
+  }
+
   return render(
     <QueryClientProvider client={client}>
       <I18nProvider>
-        <MemoryRouter>
+        <MemoryRouter initialEntries={[path]}>
           <CatalogSection />
         </MemoryRouter>
       </I18nProvider>
@@ -206,5 +240,78 @@ describe('CatalogSection', () => {
     expect(
       screen.getByRole('button', { name: 'Try again' })
     ).toBeInTheDocument()
+  })
+
+  it('searches the complete cached catalog beyond the initial page', () => {
+    renderCatalog(pokemonPage(1, 'bulbasaur', null), '/?search=pika', [
+      { id: 1, name: 'bulbasaur', artworkUrl: '/1.png' },
+      { id: 25, name: 'pikachu', artworkUrl: '/25.png' }
+    ])
+
+    expect(screen.getByRole('link', { name: /pikachu/i })).toBeInTheDocument()
+    expect(
+      screen.queryByRole('link', { name: /bulbasaur/i })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('searchbox', { name: 'Search the collection' })
+    ).toHaveValue('pika')
+    expect(getPokemonListPage).not.toHaveBeenCalled()
+  })
+
+  it('shows an empty result and restores the default list when its search chip is removed', () => {
+    renderCatalog(pokemonPage(1, 'bulbasaur', null), '/?search=missing', [
+      { id: 1, name: 'bulbasaur', artworkUrl: '/1.png' }
+    ])
+
+    expect(
+      screen.getByText('No Pokémon match these filters.')
+    ).toBeInTheDocument()
+    fireEvent.click(
+      screen.getByRole('button', { name: /Remove Search.*missing/ })
+    )
+    expect(screen.getByRole('link', { name: /bulbasaur/i })).toBeInTheDocument()
+  })
+
+  it('combines type, generation, and ability filters and clears them', () => {
+    const catalog = [
+      { id: 1, name: 'bulbasaur', artworkUrl: '/1.png' },
+      { id: 4, name: 'charmander', artworkUrl: '/4.png' },
+      { id: 25, name: 'pikachu', artworkUrl: '/25.png' }
+    ]
+    const client = new QueryClient({
+      defaultOptions: { queries: { retry: false } }
+    })
+    client.setQueryData(pokemonCatalogOptions().queryKey, catalog)
+    client.setQueryData(pokemonTypeMembersOptions('fire').queryKey, [4])
+    client.setQueryData(
+      pokemonGenerationMembersOptions('1').queryKey,
+      [1, 4, 25]
+    )
+    client.setQueryData(pokemonAbilityMembersOptions('blaze').queryKey, [4])
+    client.setQueryData(pokemonInfiniteListOptions(24).queryKey, {
+      pages: [pokemonPage(1, 'bulbasaur', null)],
+      pageParams: [0]
+    })
+
+    render(
+      <QueryClientProvider client={client}>
+        <I18nProvider>
+          <MemoryRouter
+            initialEntries={['/?type=fire&generation=1&ability=blaze']}
+          >
+            <CatalogSection />
+          </MemoryRouter>
+        </I18nProvider>
+      </QueryClientProvider>
+    )
+
+    expect(
+      screen.getByRole('link', { name: /charmander/i })
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByRole('link', { name: /pikachu/i })
+    ).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Clear all' }))
+    expect(screen.getByRole('link', { name: /bulbasaur/i })).toBeInTheDocument()
   })
 })

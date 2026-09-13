@@ -11,13 +11,21 @@ type SelectProps<T extends string> = {
   options: ReadonlyArray<SelectOption<T>>
   value: T
   onChange: (value: T) => void
+  disabled?: boolean
+  loading?: boolean
+  searchable?: boolean
+  variant?: 'compact' | 'field'
 }
 
 export const Select = <T extends string>({
   ariaLabel,
   options,
   value,
-  onChange
+  onChange,
+  disabled = false,
+  loading = false,
+  searchable = false,
+  variant = 'compact'
 }: SelectProps<T>) => {
   const selected = options.find((option) => option.value === value) ?? null
   const handleChange = (option: SingleValue<SelectOption<T>>) => {
@@ -31,28 +39,46 @@ export const Select = <T extends string>({
   return (
     <ReactSelect<SelectOption<T>, false>
       aria-label={ariaLabel}
-      className="w-11 shrink-0 text-sm"
+      className={
+        variant === 'compact' ? 'w-11 shrink-0 text-sm' : 'w-full text-sm'
+      }
       classNames={{
         control: () =>
-          'h-11 w-11 rounded-lg border border-line bg-surface shadow-none transition-colors hover:border-action focus-within:border-action focus-within:ring-2 focus-within:ring-action/20',
+          `${variant === 'compact' ? 'h-11 w-11' : 'min-h-11 w-full px-3'} rounded-lg border border-line bg-surface shadow-none transition-colors hover:border-action focus-within:border-action focus-within:ring-2 focus-within:ring-action/20`,
         menu: () => 'z-30 rounded-lg border border-line bg-surface shadow-lg',
         menuList: () => 'p-1',
         option: (state) =>
           `cursor-pointer rounded-md px-3 py-2 text-ink ${state.isFocused ? 'bg-surface-muted' : ''} ${state.isSelected ? 'font-medium text-action' : ''}`,
         singleValue: () => 'font-semibold text-ink',
-        valueContainer: () => 'flex h-full items-center justify-center p-0'
+        valueContainer: () =>
+          variant === 'compact'
+            ? 'flex h-full items-center justify-center p-0'
+            : 'flex min-w-0 flex-1 items-center p-0'
       }}
-      components={{ DropdownIndicator: null, IndicatorSeparator: null }}
+      components={
+        variant === 'compact'
+          ? { DropdownIndicator: null, IndicatorSeparator: null }
+          : { IndicatorSeparator: null }
+      }
       formatOptionLabel={(option, { context }) =>
-        context === 'value' ? (option.shortLabel ?? option.label) : option.label
+        context === 'value' && variant === 'compact'
+          ? (option.shortLabel ?? option.label)
+          : option.label
       }
       isClearable={false}
-      isSearchable={false}
+      isDisabled={disabled}
+      isLoading={loading}
+      isSearchable={searchable}
+      menuPlacement="auto"
       onChange={handleChange}
       options={[...options]}
-      styles={{
-        menu: (base) => ({ ...base, left: 'auto', right: 0, width: 160 })
-      }}
+      styles={
+        variant === 'compact'
+          ? {
+              menu: (base) => ({ ...base, left: 'auto', right: 0, width: 160 })
+            }
+          : undefined
+      }
       unstyled
       value={selected}
     />

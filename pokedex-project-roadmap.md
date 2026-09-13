@@ -1,7 +1,9 @@
 # poke-atlas — Project Roadmap
 
-> Project status: Phases 0–3 are committed. Phase 4 (infinite scroll and
-> navigation polish) is implemented locally and awaits review; Phase 5 is next.
+> Project status: Phases 0–4 are committed. Phases 5 and 6 (search, core
+> filters, sorting, and ability filtering) are implemented locally and await
+> review. Phase 7 is next. Weakness, height, and weight filters remain planned
+> extensions of Phase 6.
 
 ## 1. Project Overview
 
@@ -1449,6 +1451,9 @@ Cover every pagination state and observer transition.
 - Add name search.
 - Add numeric search.
 - Preserve search in navigation state or URL.
+- Search the complete catalog rather than only already-loaded infinite pages.
+- Keep text drafts local and sync trimmed search to the URL after 300 ms.
+- Preserve active search and filters when returning from a Pokémon detail page.
 
 ### Tests
 
@@ -1467,6 +1472,11 @@ Implement:
 - Clear individual filter.
 - Clear all.
 - Mobile filter drawer/bottom sheet.
+- Keep filter and sort state in shareable URL query parameters.
+- Compose type, generation, and ability membership lists with catalog search
+  without fetching every Pokémon detail record.
+- Reveal filtered results in batches with component-matched shimmer loading,
+  empty and error states, and a keyboard-accessible load-more action.
 
 Then extend with:
 
@@ -1474,6 +1484,12 @@ Then extend with:
 - Weakness.
 - Height.
 - Weight.
+
+Ability filtering is included in the initial Phase 6 implementation. Weakness,
+height, and weight need a separate data-index strategy: PokéAPI v2 exposes type
+damage relations and per-Pokémon height/weight, but its Pokémon list response
+does not include bulk type or measurement metadata. Keep those extensions open
+until they can be implemented without an unbounded detail-request fan-out.
 
 ### Important
 

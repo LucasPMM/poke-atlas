@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useLayoutEffect } from 'react'
-import { Link, useParams } from 'react-router'
+import { Link, useLocation, useParams } from 'react-router'
 import { ApiError } from '@/api/errors'
 import { pokemonDetailsOptions } from '@/api/pokemon'
 import { Button } from '@/components/ui/Button'
@@ -12,7 +12,13 @@ import { useI18n } from '@/lib/i18n'
 
 export const PokemonDetailsPage = () => {
   const { id = '' } = useParams()
+  const location = useLocation()
   const { locale, t } = useI18n()
+  const backTo =
+    typeof location.state?.from === 'string' &&
+    (location.state.from === '/' || location.state.from.startsWith('/?'))
+      ? location.state.from
+      : '/'
 
   useLayoutEffect(() => {
     if (id.length === 0) {
@@ -48,7 +54,7 @@ export const PokemonDetailsPage = () => {
         </Button>
         <Link
           className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-action"
-          to="/"
+          to={backTo}
         >
           <Icon name="arrowLeft" size={18} />
           {t('details.back')}
@@ -65,7 +71,7 @@ export const PokemonDetailsPage = () => {
     <section className="page-container min-h-[60vh] py-16 md:py-24">
       <Link
         className="inline-flex items-center gap-2 text-sm font-medium text-action"
-        to="/"
+        to={backTo}
       >
         <Icon name="arrowLeft" size={18} />
         {t('details.back')}

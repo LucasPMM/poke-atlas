@@ -1,6 +1,13 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { ApiError } from '../errors'
-import { getPokemon, getPokemonListPage } from './pokemon.api'
+import {
+  getPokemon,
+  getPokemonAbilityMembers,
+  getPokemonCatalog,
+  getPokemonGenerationMembers,
+  getPokemonListPage,
+  getPokemonTypeMembers
+} from './pokemon.api'
 
 afterEach(() => vi.unstubAllGlobals())
 
@@ -76,5 +83,76 @@ describe('PokéAPI client', () => {
 
     await expect(getPokemonListPage(-1, 30)).rejects.toBeInstanceOf(ApiError)
     expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('collects every catalog page for partial search beyond the first page', async () => {
+    const resource = (id: number, name: string) => ({
+      name,
+      url: `https://pokeapi.co/api/v2/pokemon/${id}/`
+    })
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            count: 2,
+            next: 'https://pokeapi.co/api/v2/pokemon?limit=500&offset=500',
+            results: [resource(1, 'bulbasaur')]
+          }),
+          { status: 200 }
+        )
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            count: 2,
+            next: null,
+            results: [resource(25, 'pikachu')]
+          }),
+          { status: 200 }
+        )
+      )
+    vi.stubGlobal('fetch', fetchMock)
+
+    expect((await getPokemonCatalog()).map(({ name }) => name)).toEqual([
+      'bulbasaur',
+      'pikachu'
+    ])
+    expect(fetchMock.mock.calls[1]?.[0].toString()).toContain('offset=500')
+  })
+
+  it('normalizes type, generation, and ability memberships', async () => {
+    const pokemon = {
+      name: 'pikachu',
+      url: 'https://pokeapi.co/api/v2/pokemon/25/'
+    }
+    const species = {
+      name: 'pikachu',
+      url: 'https://pokeapi.co/api/v2/pokemon-species/25/'
+    }
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify({ pokemon: [{ pokemon }] }), {
+            status: 200
+          })
+        )
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify({ pokemon_species: [species] }), {
+            status: 200
+          })
+        )
+        .mockResolvedValueOnce(
+          new Response(JSON.stringify({ pokemon: [{ pokemon }] }), {
+            status: 200
+          })
+        )
+    )
+
+    expect(await getPokemonTypeMembers('electric')).toEqual([25])
+    expect(await getPokemonGenerationMembers('1')).toEqual([25])
+    expect(await getPokemonAbilityMembers('static')).toEqual([25])
   })
 })

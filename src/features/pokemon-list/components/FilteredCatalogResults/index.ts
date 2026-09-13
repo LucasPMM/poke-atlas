@@ -1,0 +1,1 @@
+export { FilteredCatalogResults } from './FilteredCatalogResults'

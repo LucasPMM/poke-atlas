@@ -11,6 +11,14 @@ export const resourceListSchema = z.object({
   results: z.array(namedResourceSchema)
 })
 
+export const pokemonMembersSchema = z.object({
+  pokemon: z.array(z.object({ pokemon: namedResourceSchema }))
+})
+
+export const generationMembersSchema = z.object({
+  pokemon_species: z.array(namedResourceSchema)
+})
+
 export const pokemonSchema = z.object({
   id: z.number().int().positive(),
   name: z.string(),

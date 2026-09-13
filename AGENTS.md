@@ -28,6 +28,11 @@
 - Keep text-filter drafts local and debounce query/filter propagation (300 ms
   by default). A keystroke must not trigger one API request per character;
   explicit form submissions and select changes may apply immediately.
+- Keep catalog search, filters, and sorting in URL parameters so views can be
+  shared and restored on browser navigation. Search the full catalog, compose
+  membership filters in the data layer, and preserve the filtered URL when
+  returning from details. Do not fetch every Pokémon detail to build a filter
+  unless a bounded data strategy has been established.
 - Use semantic colors based on `DESIGN.md` in light and dark modes. Keep
   every UI color in the global theme tokens, including decorative accents.
   Initialize locale and theme from saved preferences or browser preferences;

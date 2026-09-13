@@ -2,9 +2,10 @@
 
 A multilingual Pokédex built with React, TypeScript, Vite, and Tailwind CSS.
 The current milestone includes a responsive, infinitely scrolling catalog,
+debounced name/number search, shareable type/generation/ability filters, sorting,
 detail routes, theme and language preferences, shared UI primitives, validated
-PokéAPI models, and persisted TanStack Query caching. Search across the catalog
-is next in the [roadmap](pokedex-project-roadmap.md).
+PokéAPI models, and persisted TanStack Query caching. See the
+[roadmap](pokedex-project-roadmap.md) for upcoming detail-page work.
 
 ## Requirements
 
@@ -32,6 +33,18 @@ catalog under `src/lib/i18n`; all three locales must retain identical keys.
 PokéAPI responses are normalized in `src/api` before they reach UI code. Live
 text filters use `useDebouncedValue` with a 300 ms default; the hero's explicit
 search submission navigates immediately and issues no query while typing.
+Catalog search, filters, and sorting live in the URL. The unfiltered view uses
+infinite PokéAPI pages; a filtered view loads the lightweight Pokémon catalog
+and relevant membership lists, then intersects and sorts them in the client.
+Filtered results are revealed in batches of 24 cards. Weakness, height, and
+weight filters remain later extensions because the v2 list endpoint does not
+provide the data needed for a reliable bulk filter.
 
 The published site link and final desktop/mobile screenshots will be added
 here after the release is deployed and visually verified.
+
+## GitHub repository metadata
+
+**Description:** A multilingual Pokédex for exploring, searching, and filtering Pokémon across a responsive catalog.
+
+**Topics:** `pokedex`, `pokemon`, `pokeapi`, `react`, `typescript`, `vite`, `tailwindcss`, `tanstack-query`, `i18n`, `react-hook-form`

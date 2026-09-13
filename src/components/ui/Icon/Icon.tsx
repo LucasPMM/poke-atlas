@@ -8,9 +8,11 @@ import {
   type LucideProps,
   Moon,
   Search,
+  SlidersHorizontal,
   Sparkles,
   Sun,
-  Waypoints
+  Waypoints,
+  X
 } from 'lucide-react'
 
 const icons = {
@@ -22,9 +24,11 @@ const icons = {
   layers: Layers3,
   moon: Moon,
   search: Search,
+  sliders: SlidersHorizontal,
   sparkles: Sparkles,
   sun: Sun,
-  waypoints: Waypoints
+  waypoints: Waypoints,
+  x: X
 }
 
 export type IconName = keyof typeof icons

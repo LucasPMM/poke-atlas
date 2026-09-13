@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { TextInput } from '@/components/ui/TextInput'
 import { useI18n } from '@/lib/i18n'
+import { scrollToSection } from '@/lib/motion/scroll-to-section'
 
 type SearchValues = { query: string }
 
@@ -23,7 +24,9 @@ export const SearchForm = () => {
     formState: { errors }
   } = useForm<SearchValues>({ resolver: zodResolver(schema) })
   const onSubmit = ({ query }: SearchValues) => {
-    navigate(`/pokemon/${encodeURIComponent(query.trim().toLowerCase())}`)
+    const search = new URLSearchParams({ search: query.trim() })
+    navigate({ pathname: '/', search: search.toString() })
+    scrollToSection('catalog')
   }
 
   return (

@@ -1,0 +1,1 @@
+export { DefaultCatalogResults } from './DefaultCatalogResults'

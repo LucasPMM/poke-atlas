@@ -1,4 +1,4 @@
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import { Icon } from '@/components/ui/Icon'
 import { Image } from '@/components/ui/Image'
 import { Text } from '@/components/ui/Text'
@@ -11,11 +11,13 @@ type PokemonCardProps = {
 
 export const PokemonCard = ({ pokemon }: PokemonCardProps) => {
   const { t } = useI18n()
+  const location = useLocation()
   const name = pokemon.name.replaceAll('-', ' ')
 
   return (
     <Link
       className="group block min-w-0 rounded-2xl bg-surface p-3 transition-shadow duration-200 hover:shadow-lg focus-visible:shadow-lg motion-reduce:transition-none sm:p-4"
+      state={{ from: `${location.pathname}${location.search}` }}
       to={`/pokemon/${pokemon.id}`}
     >
       <div className="flex aspect-square items-center justify-center overflow-hidden rounded-xl bg-surface-muted">

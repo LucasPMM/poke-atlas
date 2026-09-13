@@ -9,16 +9,28 @@
 - Never use `let`, `else`, `else if`, or `switch` in JavaScript or TypeScript.
   Prefer arrow functions, `const`, guard clauses, early returns, and lookup maps.
 - Keep API requests in `src/api` and map PokéAPI DTOs to app models before
-  passing data into UI components.
+  passing data into UI components. Use TanStack Query for server state, caching,
+  and persisted public API data. Add Zustand only when shared client-only state
+  cannot be handled cleanly by providers, URL state, or React Hook Form.
 - Keep feature code in `src/features` and reusable primitives in
   `src/components/ui`. Every reusable component gets a PascalCase directory,
   matching `.tsx` file, and `index.ts` barrel. Import through the barrel.
-- Use shared Image, Icon, Button, Text, TextInput, Select, and Skeleton
-  components. Select wraps React Select; forms use React Hook Form, Zod, and
-  localized validation messages.
+- Use shared Image, Icon, Button, Text, TextInput, Select, ShouldRender, and
+  Skeleton components. Do not write raw `p` or `span` elements in feature,
+  page, or layout JSX; use Text for content and suitable semantic elements for
+  decoration. Prefer ShouldRender for conditional JSX. Select wraps React
+  Select; forms use React Hook Form, Zod, and localized validation messages.
+- Compose shimmer skeletons per component so loading geometry matches the
+  final view; keep the shared Skeleton as the primitive.
 - Use semantic colors based on `DESIGN.md` in light and dark modes. Keep
-  locale/theme choices visible and persisted, with browser preferences as the
-  default. Respect reduced motion and use layout-matched shimmer loading.
+  every UI color in the global theme tokens, including decorative accents.
+  Initialize locale and theme from saved preferences or browser preferences;
+  fall back to English and light mode. Keep choices visible and persisted.
+  Respect reduced motion and use layout-matched shimmer loading.
+- Never silently discard caught errors. Handle expected failures with an
+  explicit fallback and diagnostic log or an actionable error state.
+- Give each page a PascalCase folder, matching `.tsx` source, and `index.ts`
+  barrel, like other components.
 - Keep mobile and desktop layouts accessible with visible focus styles,
   keyboard support, and comfortable touch targets.
 - Never commit unless the user explicitly requests a commit after reviewing

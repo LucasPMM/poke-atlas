@@ -22,7 +22,11 @@ const ThemeContext = createContext<ThemeContextValue | null>(null)
 const getSavedTheme = (): string | null => {
   try {
     return window.localStorage.getItem(THEME_STORAGE_KEY)
-  } catch {
+  } catch (error) {
+    console.warn(
+      'Unable to read the saved theme; using the system preference.',
+      error
+    )
     return null
   }
 }
@@ -54,9 +58,12 @@ const resolveTheme = (): Theme => {
 const applyTheme = (theme: Theme): void => {
   document.documentElement.dataset.theme = theme
   document.documentElement.style.colorScheme = theme
+  const canvasColor = getComputedStyle(document.documentElement)
+    .getPropertyValue('--surface-canvas')
+    .trim()
   document
     .querySelector('meta[name="theme-color"]')
-    ?.setAttribute('content', theme === 'dark' ? '#17171b' : '#f4f4f5')
+    ?.setAttribute('content', canvasColor)
 }
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
@@ -89,7 +96,11 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     hasExplicitTheme.current = true
     try {
       window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme)
-    } catch {
+    } catch (error) {
+      console.warn(
+        'Unable to save the theme; keeping the in-memory choice.',
+        error
+      )
       setThemeState(nextTheme)
       return
     }

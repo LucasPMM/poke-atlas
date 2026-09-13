@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
 import { Select, type SelectOption } from '@/components/ui/Select'
+import { Text } from '@/components/ui/Text'
 import { type Locale, useI18n } from '@/lib/i18n'
 import { scrollToSection } from '@/lib/motion/scroll-to-section'
 import { useTheme } from '@/lib/theme'
@@ -33,12 +34,20 @@ export const Header = () => {
           className="flex items-center gap-3"
           to="/"
         >
-          <span aria-hidden="true" className="brand-mark">
-            <span className="brand-mark-center" />
-          </span>
-          <span className="font-display text-xl font-semibold tracking-[-0.05em] text-ink">
-            poke<span className="text-action">-</span>atlas
-          </span>
+          <div aria-hidden="true" className="brand-mark">
+            <div className="brand-mark-center" />
+          </div>
+          <Text
+            as="span"
+            className="font-display text-xl font-semibold tracking-[-0.05em] text-ink"
+            variant="unstyled"
+          >
+            poke
+            <Text as="span" className="text-action" variant="unstyled">
+              -
+            </Text>
+            atlas
+          </Text>
         </Link>
         <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-4">
           <nav

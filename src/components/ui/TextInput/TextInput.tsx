@@ -1,5 +1,7 @@
 import clsx from 'clsx'
 import { type ComponentPropsWithRef, forwardRef } from 'react'
+import { ShouldRender } from '../ShouldRender'
+import { Text } from '../Text'
 
 type TextInputProps = ComponentPropsWithRef<'input'> & {
   error?: string
@@ -26,11 +28,15 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           ref={ref}
           {...props}
         />
-        {error ? (
-          <p className="mt-2 text-sm text-error" id={`${id}-error`}>
+        <ShouldRender if={Boolean(error)}>
+          <Text
+            className="mt-2 text-sm text-error"
+            id={`${id}-error`}
+            variant="unstyled"
+          >
             {error}
-          </p>
-        ) : null}
+          </Text>
+        </ShouldRender>
       </div>
     )
   }

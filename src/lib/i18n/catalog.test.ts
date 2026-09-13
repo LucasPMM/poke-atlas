@@ -28,7 +28,7 @@ describe('translation catalog', () => {
 
   it('interpolates values', () => {
     expect(
-      translate('en', 'details.description', { name: 'Pikachu' })
+      translate('en', 'details.artworkAlt', { name: 'Pikachu' })
     ).toContain('Pikachu')
   })
 })

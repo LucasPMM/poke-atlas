@@ -3,14 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f4f4f5" />
+    <meta name="theme-color" content="" />
     <title>poke-atlas</title>
     <script>
       (() => {
         const saved = (() => {
           try {
             return localStorage.getItem('poke-atlas-theme')
-          } catch {
+          } catch (error) {
+            console.warn('Unable to read the saved theme; using the system preference.', error)
             return null
           }
         })()

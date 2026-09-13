@@ -5,10 +5,12 @@ type TextProps = {
   as?: 'p' | 'span' | 'h1' | 'h2' | 'h3'
   children: ReactNode
   className?: string
-  variant?: 'body' | 'muted' | 'eyebrow' | 'heading' | 'display'
+  id?: string
+  variant?: 'body' | 'muted' | 'eyebrow' | 'heading' | 'display' | 'unstyled'
 }
 
 const styles = {
+  unstyled: '',
   body: 'text-base leading-7 text-ink',
   muted: 'text-base leading-7 text-muted',
   eyebrow: 'text-xs font-medium uppercase tracking-[0.17em] text-action',
@@ -22,9 +24,12 @@ export const Text = ({
   as: Element = 'p',
   children,
   className,
+  id,
   variant = 'body'
 }: TextProps) => {
   return (
-    <Element className={clsx(styles[variant], className)}>{children}</Element>
+    <Element className={clsx(styles[variant], className)} id={id}>
+      {children}
+    </Element>
   )
 }

@@ -15,19 +15,19 @@ const features: Array<{
     icon: 'compass',
     title: 'home.featureDiscover',
     description: 'home.featureDiscoverDescription',
-    color: 'bg-[#dcf8e9] text-[#157454]'
+    color: 'bg-feature-discover text-feature-discover-ink'
   },
   {
     icon: 'layers',
     title: 'home.featureCompare',
     description: 'home.featureCompareDescription',
-    color: 'bg-[#fff0c9] text-[#8a5b00]'
+    color: 'bg-feature-compare text-feature-compare-ink'
   },
   {
     icon: 'waypoints',
     title: 'home.featureFollow',
     description: 'home.featureFollowDescription',
-    color: 'bg-[#fce3ec] text-[#9f4266]'
+    color: 'bg-feature-follow text-feature-follow-ink'
   }
 ]
 
@@ -41,7 +41,9 @@ export const HomePage = () => {
           <Text variant="eyebrow">{t('home.eyebrow')}</Text>
           <Text as="h1" className="mt-6" variant="display">
             {t('home.titleStart')}{' '}
-            <span className="text-action">{t('home.titleEnd')}</span>
+            <Text as="span" className="text-action" variant="unstyled">
+              {t('home.titleEnd')}
+            </Text>
           </Text>
           <Text className="mt-7 max-w-xl" variant="muted">
             {t('home.description')}
@@ -57,17 +59,17 @@ export const HomePage = () => {
           </Button>
         </div>
         <div aria-hidden="true" className="atlas-illustration">
-          <span className="atlas-orbit atlas-orbit-one" />
-          <span className="atlas-orbit atlas-orbit-two" />
-          <span className="atlas-planet atlas-planet-main">
-            <span className="atlas-planet-line" />
-            <span className="atlas-planet-button" />
-          </span>
-          <span className="atlas-planet atlas-planet-small" />
-          <span className="atlas-spark atlas-spark-one">✦</span>
-          <span className="atlas-spark atlas-spark-two">✦</span>
-          <span className="atlas-dot atlas-dot-one" />
-          <span className="atlas-dot atlas-dot-two" />
+          <div className="atlas-orbit atlas-orbit-one" />
+          <div className="atlas-orbit atlas-orbit-two" />
+          <div className="atlas-planet atlas-planet-main">
+            <div className="atlas-planet-line" />
+            <div className="atlas-planet-button" />
+          </div>
+          <div className="atlas-planet atlas-planet-small" />
+          <div className="atlas-spark atlas-spark-one">✦</div>
+          <div className="atlas-spark atlas-spark-two">✦</div>
+          <div className="atlas-dot atlas-dot-one" />
+          <div className="atlas-dot atlas-dot-two" />
         </div>
       </section>
 
@@ -84,11 +86,11 @@ export const HomePage = () => {
         <div className="mt-9 grid gap-4 md:grid-cols-3">
           {features.map((feature) => (
             <article className="rounded-2xl bg-surface p-6" key={feature.title}>
-              <span
+              <div
                 className={`mb-6 inline-flex h-11 w-11 items-center justify-center rounded-xl ${feature.color}`}
               >
                 <Icon name={feature.icon} size={21} />
-              </span>
+              </div>
               <Text as="h3" className="font-medium" variant="body">
                 {t(feature.title)}
               </Text>
@@ -111,12 +113,12 @@ export const HomePage = () => {
               {t('home.foundationDescription')}
             </Text>
           </div>
-          <span
+          <div
             aria-hidden="true"
             className="mt-8 flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-action/10 text-action md:mt-0"
           >
             <Icon name="sparkles" size={30} />
-          </span>
+          </div>
         </div>
       </section>
     </>

@@ -12,6 +12,26 @@
   --semantic-action-contrast: #ffffff;
   --semantic-error: #b42318;
   --semantic-footer: #09090b;
+  --semantic-footer-ink: #ffffff;
+  --semantic-footer-muted: #9f9fa9;
+  --feature-discover-surface: #dcf8e9;
+  --feature-discover-ink: #157454;
+  --feature-compare-surface: #fff0c9;
+  --feature-compare-ink: #8a5b00;
+  --feature-follow-surface: #fce3ec;
+  --feature-follow-ink: #9f4266;
+  --art-brand-bottom: #f5e782;
+  --art-brand-top: #f68177;
+  --art-hero-wash: #d9f5e8;
+  --art-outline: #252528;
+  --art-planet-base: #fff4d9;
+  --art-planet-shadow: #b9e6d1;
+  --art-planet-top: #fb756f;
+  --art-planet-button: #fff9ec;
+  --art-small-planet: #f5d568;
+  --art-small-shadow: #eaa8b0;
+  --art-spark: #f6a300;
+  --art-spark-secondary: #f38283;
   --family-display: "DM Sans Variable", "DM Sans", sans-serif;
   --family-body: "Inter Variable", "Inter", sans-serif;
 }
@@ -28,6 +48,15 @@
   --semantic-action-contrast: #092e2b;
   --semantic-error: #ffb4a9;
   --semantic-footer: #0c0c0e;
+  --semantic-footer-ink: #ffffff;
+  --semantic-footer-muted: #b8b8c0;
+  --feature-discover-surface: #204a43;
+  --feature-discover-ink: #9af3c7;
+  --feature-compare-surface: #514326;
+  --feature-compare-ink: #ffe59d;
+  --feature-follow-surface: #523441;
+  --feature-follow-ink: #ffd2e2;
+  --art-hero-wash: #204a43;
 }
 
 @theme inline {
@@ -42,6 +71,14 @@
   --color-action-contrast: var(--semantic-action-contrast);
   --color-error: var(--semantic-error);
   --color-footer: var(--semantic-footer);
+  --color-footer-ink: var(--semantic-footer-ink);
+  --color-footer-muted: var(--semantic-footer-muted);
+  --color-feature-discover: var(--feature-discover-surface);
+  --color-feature-discover-ink: var(--feature-discover-ink);
+  --color-feature-compare: var(--feature-compare-surface);
+  --color-feature-compare-ink: var(--feature-compare-ink);
+  --color-feature-follow: var(--feature-follow-surface);
+  --color-feature-follow-ink: var(--feature-follow-ink);
   --font-display: var(--family-display);
   --font-sans: var(--family-body);
 }
@@ -86,14 +123,14 @@ input:focus-visible {
   overflow: hidden;
   border: 2px solid var(--semantic-ink);
   border-radius: 50%;
-  background: #f5e782;
+  background: var(--art-brand-bottom);
   transform: rotate(-18deg);
 }
 
 .brand-mark::before {
   position: absolute;
   inset: 0 0 50%;
-  background: #f68177;
+  background: var(--art-brand-top);
   content: "";
 }
 
@@ -129,13 +166,9 @@ input:focus-visible {
   inset: 11%;
   z-index: -1;
   border-radius: 36% 64% 60% 40% / 40% 38% 62% 60%;
-  background: #d9f5e8;
+  background: var(--art-hero-wash);
   content: "";
   transform: rotate(-10deg);
-}
-
-:root[data-theme="dark"] .atlas-illustration::before {
-  background: #204a43;
 }
 
 .atlas-orbit {
@@ -163,9 +196,9 @@ input:focus-visible {
   width: 55%;
   aspect-ratio: 1;
   overflow: hidden;
-  border: 8px solid #252528;
-  background: #fff4d9;
-  box-shadow: 18px 22px 0 #b9e6d1;
+  border: 8px solid var(--art-outline);
+  background: var(--art-planet-base);
+  box-shadow: 18px 22px 0 var(--art-planet-shadow);
   transform: rotate(-16deg);
   animation: float 7s ease-in-out infinite;
 }
@@ -173,7 +206,7 @@ input:focus-visible {
 .atlas-planet-main::before {
   position: absolute;
   inset: 0 0 50%;
-  background: #fb756f;
+  background: var(--art-planet-top);
   content: "";
 }
 
@@ -183,7 +216,7 @@ input:focus-visible {
   z-index: 1;
   width: 100%;
   height: 12px;
-  background: #252528;
+  background: var(--art-outline);
 }
 
 .atlas-planet-button {
@@ -193,9 +226,9 @@ input:focus-visible {
   z-index: 2;
   width: 54px;
   height: 54px;
-  border: 10px solid #252528;
+  border: 10px solid var(--art-outline);
   border-radius: 50%;
-  background: #fff9ec;
+  background: var(--art-planet-button);
 }
 
 .atlas-planet-small {
@@ -203,14 +236,14 @@ input:focus-visible {
   right: 11%;
   width: 18%;
   aspect-ratio: 1;
-  border: 6px solid #252528;
-  background: #f5d568;
-  box-shadow: 8px 9px 0 #eaa8b0;
+  border: 6px solid var(--art-outline);
+  background: var(--art-small-planet);
+  box-shadow: 8px 9px 0 var(--art-small-shadow);
 }
 
 .atlas-spark {
   position: absolute;
-  color: #f6a300;
+  color: var(--art-spark);
   font-size: 44px;
   line-height: 1;
 }
@@ -223,7 +256,7 @@ input:focus-visible {
 .atlas-spark-two {
   right: 5%;
   bottom: 18%;
-  color: #f38283;
+  color: var(--art-spark-secondary);
   font-size: 28px;
 }
 
@@ -232,7 +265,7 @@ input:focus-visible {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #019d91;
+  background: var(--semantic-action);
 }
 
 .atlas-dot-one {
@@ -245,7 +278,7 @@ input:focus-visible {
   left: 14%;
   width: 18px;
   height: 18px;
-  background: #f5d568;
+  background: var(--art-small-planet);
 }
 
 .shimmer {

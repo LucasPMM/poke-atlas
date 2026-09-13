@@ -6,7 +6,7 @@ type SkeletonProps = {
 
 export const Skeleton = ({ className }: SkeletonProps) => {
   return (
-    <span
+    <div
       aria-hidden="true"
       className={clsx('shimmer block rounded-2xl bg-surface-muted', className)}
     />

@@ -19,7 +19,7 @@ export const Image = ({
 
   if (!src || failedSource === src) {
     return (
-      <span
+      <div
         aria-hidden={alt === ''}
         aria-label={alt === '' ? undefined : alt || fallbackLabel}
         className={clsx(
@@ -29,7 +29,7 @@ export const Image = ({
         role="img"
       >
         <Icon name="sparkles" size={28} />
-      </span>
+      </div>
     )
   }
 

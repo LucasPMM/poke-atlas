@@ -29,7 +29,11 @@ const I18nContext = createContext<I18nContextValue | null>(null)
 const getSavedLocale = (): string | null => {
   try {
     return window.localStorage.getItem(LOCALE_STORAGE_KEY)
-  } catch {
+  } catch (error) {
+    console.warn(
+      'Unable to read the saved locale; using browser preferences.',
+      error
+    )
     return null
   }
 }
@@ -37,7 +41,11 @@ const getSavedLocale = (): string | null => {
 const persistLocale = (locale: Locale): void => {
   try {
     window.localStorage.setItem(LOCALE_STORAGE_KEY, locale)
-  } catch {
+  } catch (error) {
+    console.warn(
+      'Unable to save the locale; keeping the in-memory choice.',
+      error
+    )
     return
   }
 }

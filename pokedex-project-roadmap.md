@@ -1,7 +1,7 @@
 # poke-atlas — Project Roadmap
 
-> Project status: Phases 0 and 1 are implemented locally. Phase 2 (PokéAPI
-> foundation) is next. No implementation commit has been created.
+> Project status: Phases 0 and 1 are committed. Phase 2 (PokéAPI foundation) is
+> implemented locally and awaits review; Phase 3 (base listing) is next.
 
 ## 1. Project Overview
 
@@ -139,6 +139,12 @@ Use TanStack Query for:
 - Pagination.
 - Infinite queries.
 - Prefetching Pokémon details.
+
+Persist successful, public PokéAPI queries across reloads with a versioned
+TanStack Query cache and a bounded age. Cache hydration must not prevent the
+app from working when browser storage is unavailable. Use Zustand only if a
+future feature introduces shared client-only state that URL state, providers,
+React Hook Form, and TanStack Query do not model well.
 
 Static resources such as types and generations may use long stale times.
 
@@ -419,6 +425,11 @@ PascalCase folder with a matching source file and `index.ts` barrel; one-off
 components stay beside their parent. Feature code imports shared controls
 through their barrels. React Select is wrapped once with theme-aware styles;
 forms use React Hook Form and localized validation.
+Pages follow the same PascalCase folder and barrel convention. Use the shared
+Text component instead of raw `p` or `span` elements in page, feature, and
+layout JSX. Prefer ShouldRender for conditional JSX. All interface colors,
+including illustrations and category accents, must come from the global theme
+tokens.
 
 ---
 
@@ -864,6 +875,10 @@ Requirements:
 - Sufficient contrast.
 - Reduced-motion support.
 - A visible, keyboard-accessible language selector and light/dark theme toggle.
+
+Initialize language and theme from saved choices, then browser preferences;
+fall back to English and light when neither is available. Handle storage and
+network failures explicitly rather than using silent `catch` blocks.
 - Do not represent Pokémon types only by color.
 
 Test keyboard navigation for all major flows.
@@ -881,6 +896,9 @@ EmptyState
 PokemonCardSkeleton
 PokemonDetailsSkeleton
 ```
+
+Compose each shimmer skeleton to match its component's final shape and size.
+The shared Skeleton is only the animation primitive.
 
 Handle:
 
@@ -1361,6 +1379,9 @@ all succeed.
 - Add type query.
 - Add evolution query.
 - Add API error handling.
+- Persist versioned, successful public queries with TanStack Query.
+- Ensure storage failure degrades to in-memory caching.
+- Resolve the Vite CSS side-effect import declaration for strict TypeScript.
 
 ### Tests
 

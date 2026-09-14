@@ -58,10 +58,15 @@ export const PokemonBiology = ({
     species.genderRate >= 0
       ? species.genderRate * 12.5
       : null
+  const formatPercent = (value: number) =>
+    new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(value)
   const growthKey = species?.growthRate ? growthKeys[species.growthRate] : null
 
   return (
-    <section className="rounded-3xl bg-surface p-6 md:p-8" id="biology">
+    <section
+      className="flex h-full flex-col rounded-3xl bg-surface p-6 md:p-8"
+      id="biology"
+    >
       <Text
         as="h2"
         className="font-display text-2xl font-medium md:text-3xl"
@@ -100,12 +105,8 @@ export const PokemonBiology = ({
                 : femalePercent === null
                   ? t('details.genderUnknown')
                   : t('details.genderRatio', {
-                      female: new Intl.NumberFormat(locale, {
-                        maximumFractionDigits: 1
-                      }).format(femalePercent),
-                      male: new Intl.NumberFormat(locale, {
-                        maximumFractionDigits: 1
-                      }).format(100 - femalePercent)
+                      female: formatPercent(femalePercent),
+                      male: formatPercent(100 - femalePercent)
                     })}
             </Text>
           </div>
@@ -154,6 +155,46 @@ export const PokemonBiology = ({
             </Text>
           </div>
         </dl>
+      </ShouldRender>
+      <ShouldRender if={Boolean(species)}>
+        <div className="mt-auto grid gap-5 pt-7 sm:grid-cols-2">
+          <ShouldRender if={femalePercent !== null}>
+            <div className="rounded-2xl bg-surface-muted p-4">
+              <Text className="text-sm font-medium" variant="unstyled">
+                {t('details.genderDistribution')}
+              </Text>
+              <meter
+                aria-label={t('details.genderRatio', {
+                  female: formatPercent(femalePercent ?? 0),
+                  male: formatPercent(100 - (femalePercent ?? 0))
+                })}
+                className="stat-meter mt-4 h-2.5 w-full"
+                max={100}
+                min={0}
+                value={femalePercent ?? 0}
+              />
+            </div>
+          </ShouldRender>
+          <ShouldRender
+            if={
+              species?.captureRate !== null &&
+              species?.captureRate !== undefined
+            }
+          >
+            <div className="rounded-2xl bg-surface-muted p-4">
+              <Text className="text-sm font-medium" variant="unstyled">
+                {t('details.captureScale')}
+              </Text>
+              <meter
+                aria-label={t('details.captureRate')}
+                className="stat-meter mt-4 h-2.5 w-full"
+                max={255}
+                min={0}
+                value={species?.captureRate ?? 0}
+              />
+            </div>
+          </ShouldRender>
+        </div>
       </ShouldRender>
     </section>
   )

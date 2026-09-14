@@ -3,6 +3,7 @@ import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 import { HomePage } from '@/pages/HomePage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
+import { PokemonComparePage } from '@/pages/PokemonComparePage'
 import { PokemonDetailsPage } from '@/pages/PokemonDetailsPage'
 
 export const App = () => {
@@ -12,6 +13,7 @@ export const App = () => {
       <main>
         <Routes>
           <Route element={<HomePage />} path="/" />
+          <Route element={<PokemonComparePage />} path="/compare" />
           <Route element={<PokemonDetailsPage />} path="/pokemon/:id" />
           <Route element={<NotFoundPage />} path="*" />
         </Routes>

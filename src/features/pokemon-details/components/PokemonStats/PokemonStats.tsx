@@ -1,15 +1,6 @@
 import { Text } from '@/components/ui/Text'
-import { type TranslationKey, useI18n } from '@/lib/i18n'
+import { getPokemonStatLabel, useI18n } from '@/lib/i18n'
 import type { PokemonStat } from '@/models/pokemon'
-
-const statLabels: Record<string, TranslationKey> = {
-  hp: 'details.stat.hp',
-  attack: 'details.stat.attack',
-  defense: 'details.stat.defense',
-  'special-attack': 'details.stat.special-attack',
-  'special-defense': 'details.stat.special-defense',
-  speed: 'details.stat.speed'
-}
 
 export const PokemonStats = ({
   stats
@@ -22,7 +13,7 @@ export const PokemonStats = ({
     new Intl.NumberFormat(locale).format(value)
 
   return (
-    <section className="rounded-3xl bg-surface p-6 md:p-8">
+    <section className="h-full rounded-3xl bg-surface p-6 md:p-8">
       <div className="flex items-end justify-between gap-4">
         <Text
           as="h2"
@@ -45,8 +36,7 @@ export const PokemonStats = ({
       </div>
       <div className="mt-7 space-y-5">
         {stats.map((stat) => {
-          const labelKey = statLabels[stat.name]
-          const label = labelKey ? t(labelKey) : stat.name.replaceAll('-', ' ')
+          const label = getPokemonStatLabel(stat.name, t)
           const maximum = Math.max(255, stat.value)
 
           return (

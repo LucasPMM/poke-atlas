@@ -8,7 +8,7 @@ export const PokemonMoves = ({ pokemon }: { pokemon: Pokemon }) => {
   const moves = pokemon.moves.slice(-8)
 
   return (
-    <section className="rounded-3xl bg-surface p-6 md:p-8" id="moves">
+    <section className="h-full rounded-3xl bg-surface p-6 md:p-8" id="moves">
       <Text
         as="h2"
         className="font-display text-2xl font-medium md:text-3xl"

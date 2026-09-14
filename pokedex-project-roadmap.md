@@ -6,6 +6,10 @@
 > and Lighthouse verification are recorded below. Weakness, height, and weight
 > filters remain post-MVP extensions, not release gates.
 
+> Post-MVP update (2026-09-14): Wide evolution families now use stage grids,
+> detail-card pairs include useful visual summaries, and a shareable two-Pokémon
+> comparison is implemented. These changes are pending commit and deployment.
+
 ## 1. Project Overview
 
 Build a modern, responsive, mobile-friendly Pokédex using React and TypeScript.
@@ -1772,9 +1776,7 @@ A feature is complete only when:
 Possible post-MVP features:
 
 - Favorites.
-- Compare Pokémon.
 - Team builder.
-- Dark mode.
 - Shiny artwork toggle.
 - Sprite generation selector.
 - Region browsing.
@@ -1787,7 +1789,16 @@ Possible post-MVP features:
 - Offline/PWA support.
 - Local recently viewed history.
 - Keyboard command palette.
-- Pokémon comparison charts.
+- Richer Pokémon comparison charts.
+
+The initial comparison feature is complete: two Pokémon can be selected from
+the lightweight catalog, compared through cached detail queries, and restored
+from a shared URL. The detail page links directly into comparison with the
+current Pokémon preselected. Invalid URL IDs are ignored before querying,
+identical selections are rejected, and loading and retry states are provided.
+Evolution stages support wide branches such as Eevee's eight variations without
+horizontal scrolling at 320 px. Profile and biology panels now balance their
+neighboring panels with meaningful stat and biology scales.
 
 These should not block the MVP.
 

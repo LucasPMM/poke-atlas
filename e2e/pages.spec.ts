@@ -25,6 +25,20 @@ const mockApi = async (page: Page) => {
       return
     }
 
+    if (path === 'pokemon' && url.searchParams.get('limit') === '500') {
+      await route.fulfill({
+        json: {
+          count: 2,
+          next: null,
+          results: [
+            resource('pokemon', 4, 'charmander'),
+            resource('pokemon', 1, 'bulbasaur')
+          ]
+        }
+      })
+      return
+    }
+
     if (path === 'ability') {
       await route.fulfill({ json: { count: 0, next: null, results: [] } })
       return
@@ -47,6 +61,24 @@ const mockApi = async (page: Page) => {
             }
           ],
           stats: [{ base_stat: 39, stat: resource('stat', 1, 'hp') }],
+          moves: [],
+          sprites: { front_default: null }
+        }
+      })
+      return
+    }
+
+    if (path === 'pokemon/1') {
+      await route.fulfill({
+        json: {
+          id: 1,
+          name: 'bulbasaur',
+          species: resource('pokemon-species', 1, 'bulbasaur'),
+          height: 7,
+          weight: 69,
+          types: [{ slot: 1, type: resource('type', 12, 'grass') }],
+          abilities: [],
+          stats: [{ base_stat: 45, stat: resource('stat', 1, 'hp') }],
           moves: [],
           sprites: { front_default: null }
         }
@@ -93,6 +125,16 @@ test('published base serves assets, hash routes, refresh, and a 320 px layout', 
   await expect(page.getByRole('heading', { name: 'charmander' })).toBeVisible()
   await page.getByRole('link', { name: 'Back to collection' }).click()
   await expect(page).toHaveURL(/\/#\/$/)
+
+  await page.goto('./#/compare?first=4&second=1')
+  await expect(
+    page.getByRole('heading', { name: 'Stats side by side' })
+  ).toBeVisible()
+  const comparisonResponse = await page.reload()
+  expect(comparisonResponse?.status()).toBe(200)
+  await expect(
+    page.getByRole('heading', { name: 'Stats side by side' })
+  ).toBeVisible()
   expect(failedAssets).toEqual([])
 
   const hasHorizontalOverflow = await page.evaluate(

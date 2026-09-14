@@ -11,6 +11,7 @@ export type SelectOption<T extends string> = {
 
 type SelectProps<T extends string> = {
   ariaLabel: string
+  inputId?: string
   options: ReadonlyArray<SelectOption<T>>
   value: T
   onChange: (value: T) => void
@@ -22,6 +23,7 @@ type SelectProps<T extends string> = {
 
 export const Select = <T extends string>({
   ariaLabel,
+  inputId,
   options,
   value,
   onChange,
@@ -103,6 +105,7 @@ export const Select = <T extends string>({
       isDisabled={disabled}
       isLoading={loading}
       isSearchable={searchable}
+      inputId={inputId}
       menuPlacement="auto"
       onChange={handleChange}
       options={[...options]}

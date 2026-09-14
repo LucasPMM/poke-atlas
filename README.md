@@ -3,6 +3,7 @@
 A multilingual Pokédex built with React, TypeScript, Vite, and Tailwind CSS.
 Poké Atlas includes a responsive, infinitely scrolling catalog,
 debounced name/number search, shareable type/generation/ability filters, sorting,
+and a shareable two-Pokémon comparison,
 detail routes, theme and language preferences, shared UI primitives, validated
 PokéAPI models, and persisted TanStack Query caching. Pokémon details show
 localized flavor text, measurements, abilities, base stats, type matchups,
@@ -80,6 +81,12 @@ does not provide the data needed for a reliable bulk filter.
 The detail page loads species, types, and evolution data through separate
 cached queries. Its sections can retry independently when optional data fails,
 while measurements, abilities, and stats remain available.
+Wide evolution families are grouped by stage in a responsive grid, with each
+branch's requirements inside its card. Profile and biology cards use compact
+stat and biology visuals to balance neighboring sections. Comparison is
+available from the catalog or a Pokémon detail page; it loads two normalized
+Pokémon records on a shareable `/compare?first=...&second=...` hash route and
+shows types, abilities, measurements, and base stats side by side.
 The detail-section navigator works with hash routing and remains usable on
 small screens. Level-up moves are drawn from one documented game-version group
 per Pokémon, with recent mainline versions preferred. Catalog empty states

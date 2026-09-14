@@ -362,7 +362,9 @@ input:focus-visible {
 
 .pokemon-detail,
 .pokemon-type-badge,
-.pokemon-type-swatch {
+.pokemon-type-swatch,
+.pokemon-compare-card,
+.pokemon-compare-meter {
   --pokemon-accent: oklch(0.49 0.14 var(--pokemon-hue));
   --pokemon-accent-ink: oklch(0.32 0.09 var(--pokemon-hue));
   --pokemon-wash: oklch(0.94 0.045 var(--pokemon-hue));
@@ -370,7 +372,9 @@ input:focus-visible {
 
 :root[data-theme="dark"] .pokemon-detail,
 :root[data-theme="dark"] .pokemon-type-badge,
-:root[data-theme="dark"] .pokemon-type-swatch {
+:root[data-theme="dark"] .pokemon-type-swatch,
+:root[data-theme="dark"] .pokemon-compare-card,
+:root[data-theme="dark"] .pokemon-compare-meter {
   --pokemon-accent: oklch(0.78 0.11 var(--pokemon-hue));
   --pokemon-accent-ink: oklch(0.9 0.065 var(--pokemon-hue));
   --pokemon-wash: oklch(0.29 0.045 var(--pokemon-hue));
@@ -380,6 +384,19 @@ input:focus-visible {
   border: 1px solid color-mix(in srgb, var(--pokemon-accent) 28%, transparent);
   background: var(--pokemon-wash);
   color: var(--pokemon-accent-ink);
+}
+
+.pokemon-compare-card {
+  border-color: color-mix(
+    in srgb,
+    var(--pokemon-accent) 28%,
+    var(--semantic-line)
+  );
+  background: linear-gradient(
+    155deg,
+    var(--pokemon-wash),
+    var(--surface-paper) 38%
+  );
 }
 
 .pokemon-accent-text {
@@ -433,6 +450,14 @@ input:focus-visible {
 }
 
 .pokemon-detail .stat-meter::-moz-meter-bar {
+  background: var(--pokemon-accent);
+}
+
+.pokemon-compare-meter::-webkit-meter-optimum-value {
+  background: var(--pokemon-accent);
+}
+
+.pokemon-compare-meter::-moz-meter-bar {
   background: var(--pokemon-accent);
 }
 

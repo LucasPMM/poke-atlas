@@ -92,6 +92,14 @@ export const PokemonHero = ({ pokemon, species, backTo }: PokemonHeroProps) => {
               </Text>
             </div>
           </div>
+          <Link
+            className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-lg border border-line bg-surface px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-surface-muted"
+            to={`/compare?first=${pokemon.id}`}
+          >
+            <Icon name="layers" size={18} />
+            {t('compare.open')}
+            <Icon name="arrowUpRight" size={16} />
+          </Link>
         </div>
         <div className="pokemon-artwork-frame flex aspect-square items-center justify-center overflow-hidden rounded-3xl">
           <ShouldRender if={theme.secondary !== null}>

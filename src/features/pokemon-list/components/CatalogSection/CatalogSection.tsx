@@ -30,6 +30,14 @@ export const CatalogSection = () => {
         <Text className="mt-4" variant="muted">
           {t('list.description')}
         </Text>
+        <Link
+          className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-lg border border-line bg-surface px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-surface-muted"
+          to="/compare"
+        >
+          <Icon name="layers" size={18} />
+          {t('compare.open')}
+          <Icon name="arrowUpRight" size={16} />
+        </Link>
       </div>
 
       <CatalogControls {...controls} />
@@ -46,3 +54,6 @@ export const CatalogSection = () => {
     </section>
   )
 }
+
+import { Link } from 'react-router'
+import { Icon } from '@/components/ui/Icon'

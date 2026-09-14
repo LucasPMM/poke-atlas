@@ -20,6 +20,26 @@ type EvolutionLineProps = {
   retry: () => void
 }
 
+type StageEntry = { node: EvolutionNode; parent: EvolutionNode | null }
+
+const getEvolutionStages = (root: EvolutionNode): Array<Array<StageEntry>> => {
+  const collect = (
+    entries: Array<StageEntry>,
+    stages: Array<Array<StageEntry>>
+  ): Array<Array<StageEntry>> => {
+    if (entries.length === 0) {
+      return stages
+    }
+
+    const next = entries.flatMap(({ node }) =>
+      node.evolvesTo.map((child) => ({ node: child, parent: node }))
+    )
+    return collect(next, [...stages, entries])
+  }
+
+  return collect([{ node: root, parent: null }], [])
+}
+
 const triggerLabels: Record<string, TranslationKey> = {
   'level-up': 'details.evolutionLevelUp',
   trade: 'details.evolutionTrade',
@@ -62,12 +82,16 @@ const timeLabels: Record<string, TranslationKey> = {
   dusk: 'details.evolutionDusk'
 }
 
-const EvolutionBranch = ({
+const EvolutionStageCard = ({
   node,
+  parent,
+  showParent,
   currentSpeciesId,
   backTo
 }: {
   node: EvolutionNode
+  parent: EvolutionNode | null
+  showParent: boolean
   currentSpeciesId: number
   backTo: string
 }) => {
@@ -104,84 +128,74 @@ const EvolutionBranch = ({
   }
 
   return (
-    <li
-      className={
-        node.evolvesTo.length > 0
-          ? 'flex w-full flex-col items-center'
-          : 'flex min-w-28 flex-col items-center sm:min-w-36'
-      }
-    >
-      <ShouldRender if={node.methods.length > 0}>
-        <div className="mb-3 flex max-w-44 flex-col items-center gap-2 text-center">
-          {node.methods.map((method, methodIndex) => (
-            <div
-              className="flex flex-wrap justify-center gap-1"
-              key={`${method.trigger}-${method.requirements.map(({ kind, value }) => `${kind}:${value}`).join('|')}`}
-            >
-              <ShouldRender if={methodIndex > 0}>
-                <Text className="w-full text-xs" variant="muted">
-                  {t('details.evolutionOr')}
-                </Text>
-              </ShouldRender>
-              <Text
-                className="rounded-full bg-surface-muted px-2 py-1 text-xs font-medium text-muted"
-                variant="unstyled"
-              >
-                {t(
-                  method.trigger
-                    ? (triggerLabels[method.trigger] ??
-                        'details.evolutionSpecial')
-                    : 'details.evolutionSpecial'
-                )}
-              </Text>
-              {method.requirements.map((requirement) => (
-                <Text
-                  className="rounded-full bg-surface-muted px-2 py-1 text-xs font-medium text-muted"
-                  key={`${requirement.kind}-${requirement.value}`}
-                  variant="unstyled"
-                >
-                  {formatRequirement(requirement)}
-                </Text>
-              ))}
-            </div>
-          ))}
-        </div>
-      </ShouldRender>
+    <li className="min-w-0">
       <Link
         aria-current={node.id === currentSpeciesId ? 'page' : undefined}
-        className="pokemon-evolution-card group flex w-28 flex-col items-center rounded-2xl border border-line bg-surface p-3 text-center transition-[border-color,box-shadow] duration-200 motion-reduce:transition-none sm:w-36"
+        className="pokemon-evolution-card group flex h-full min-w-0 flex-col items-center rounded-2xl border border-line bg-surface p-3 text-center transition-[border-color,box-shadow] duration-200 motion-reduce:transition-none sm:p-4"
         state={{ from: backTo }}
         to={`/pokemon/${node.id}`}
       >
-        <Image
-          alt={t('details.artworkAlt', { name })}
-          className="aspect-square w-full object-contain p-1 transition-transform duration-200 group-hover:scale-105 motion-reduce:transition-none"
-          fallbackLabel={t('details.artworkFallback')}
-          src={node.artworkUrl}
-        />
+        <div className="flex aspect-square w-full max-w-28 items-center justify-center overflow-hidden rounded-xl bg-surface-muted">
+          <Image
+            alt={t('details.artworkAlt', { name })}
+            className="h-full w-full object-contain p-2 transition-transform duration-200 group-hover:scale-105 motion-reduce:transition-none"
+            fallbackLabel={t('details.artworkFallback')}
+            src={node.artworkUrl}
+          />
+        </div>
         <Text className="mt-2 text-xs text-muted" variant="unstyled">
           #{String(node.id).padStart(4, '0')}
         </Text>
         <Text
-          className="mt-1 text-sm font-medium capitalize"
+          className="mt-1 break-words text-sm font-medium capitalize"
           variant="unstyled"
         >
           {name}
         </Text>
+        <ShouldRender if={showParent && parent !== null}>
+          <Text className="mt-1 text-xs" variant="muted">
+            {t('details.evolutionFrom', {
+              name: parent?.name.replaceAll('-', ' ') ?? ''
+            })}
+          </Text>
+        </ShouldRender>
+        <ShouldRender if={node.methods.length > 0}>
+          <div className="mt-auto flex w-full flex-col items-center gap-2 border-t border-line pt-3 text-center">
+            {node.methods.map((method, methodIndex) => (
+              <div
+                className="flex flex-wrap justify-center gap-1"
+                key={`${method.trigger}-${method.requirements.map(({ kind, value }) => `${kind}:${value}`).join('|')}`}
+              >
+                <ShouldRender if={methodIndex > 0}>
+                  <Text className="w-full text-xs" variant="muted">
+                    {t('details.evolutionOr')}
+                  </Text>
+                </ShouldRender>
+                <Text
+                  className="rounded-full bg-surface-muted px-2 py-1 text-xs font-medium text-muted"
+                  variant="unstyled"
+                >
+                  {t(
+                    method.trigger
+                      ? (triggerLabels[method.trigger] ??
+                          'details.evolutionSpecial')
+                      : 'details.evolutionSpecial'
+                  )}
+                </Text>
+                {method.requirements.map((requirement) => (
+                  <Text
+                    className="rounded-full bg-surface-muted px-2 py-1 text-xs font-medium text-muted"
+                    key={`${requirement.kind}-${requirement.value}`}
+                    variant="unstyled"
+                  >
+                    {formatRequirement(requirement)}
+                  </Text>
+                ))}
+              </div>
+            ))}
+          </div>
+        </ShouldRender>
       </Link>
-      <ShouldRender if={node.evolvesTo.length > 0}>
-        <div className="mt-4 h-6 border-l border-line" aria-hidden="true" />
-        <ul className="flex w-full flex-wrap justify-center gap-4">
-          {node.evolvesTo.map((child) => (
-            <EvolutionBranch
-              backTo={backTo}
-              currentSpeciesId={currentSpeciesId}
-              key={child.id}
-              node={child}
-            />
-          ))}
-        </ul>
-      </ShouldRender>
     </li>
   )
 }
@@ -195,6 +209,7 @@ export const EvolutionLine = ({
   retry
 }: EvolutionLineProps) => {
   const { t } = useI18n()
+  const stages = chain ? getEvolutionStages(chain.root) : []
 
   return (
     <section className="rounded-3xl bg-surface p-6 md:p-8" id="evolution">
@@ -208,12 +223,16 @@ export const EvolutionLine = ({
       <ShouldRender if={isPending}>
         <div
           aria-label={t('details.loadingEvolution')}
-          className="mt-7 flex flex-wrap justify-center gap-4"
+          className="mt-7 space-y-5"
           role="status"
         >
-          {[0, 1, 2].map((index) => (
-            <Skeleton className="h-44 w-36 rounded-2xl" key={index} />
-          ))}
+          <Skeleton className="mx-auto h-52 w-40 rounded-2xl" />
+          <Skeleton className="mx-auto h-5 w-28" />
+          <div className="mx-auto grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-3">
+            {[0, 1, 2].map((index) => (
+              <Skeleton className="h-64 rounded-2xl" key={index} />
+            ))}
+          </div>
         </div>
       </ShouldRender>
       <ShouldRender if={isError}>
@@ -227,16 +246,49 @@ export const EvolutionLine = ({
         </Text>
       </ShouldRender>
       <ShouldRender if={!isPending && !isError && Boolean(chain)}>
-        <div className="mt-7 overflow-x-auto pb-2">
-          <ul className="flex justify-center">
-            {chain ? (
-              <EvolutionBranch
-                backTo={backTo}
-                currentSpeciesId={currentSpeciesId}
-                node={chain.root}
-              />
-            ) : null}
-          </ul>
+        <div className="mt-7 space-y-5">
+          {stages.map((stage, index) => {
+            const parentCount = new Set(stage.map(({ parent }) => parent?.id))
+              .size
+            const columns =
+              stage.length === 1
+                ? 'max-w-44 grid-cols-1'
+                : stage.length === 2
+                  ? 'max-w-2xl grid-cols-2'
+                  : stage.length === 3
+                    ? 'max-w-3xl grid-cols-2 sm:grid-cols-3'
+                    : 'max-w-5xl grid-cols-2 sm:grid-cols-3 lg:grid-cols-4'
+
+            return (
+              <div key={stage.map(({ node }) => node.id).join('-')}>
+                <ShouldRender if={index > 0}>
+                  <div
+                    aria-hidden="true"
+                    className="mx-auto mb-4 h-6 w-px bg-line"
+                  />
+                </ShouldRender>
+                <Text
+                  as="h3"
+                  className="text-center text-xs font-semibold uppercase tracking-[0.16em] text-muted"
+                  variant="unstyled"
+                >
+                  {t('details.evolutionStage', { number: index + 1 })}
+                </Text>
+                <ul className={`mx-auto mt-4 grid w-full gap-3 ${columns}`}>
+                  {stage.map(({ node, parent }) => (
+                    <EvolutionStageCard
+                      backTo={backTo}
+                      currentSpeciesId={currentSpeciesId}
+                      key={node.id}
+                      node={node}
+                      parent={parent}
+                      showParent={parentCount > 1}
+                    />
+                  ))}
+                </ul>
+              </div>
+            )
+          })}
           <ShouldRender if={chain?.root.evolvesTo.length === 0}>
             <Text className="mt-4 text-center" variant="muted">
               {t('details.noEvolution')}

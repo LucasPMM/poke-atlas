@@ -1,7 +1,7 @@
 # poke-atlas
 
 A multilingual Pokédex built with React, TypeScript, Vite, and Tailwind CSS.
-The release candidate includes a responsive, infinitely scrolling catalog,
+Poké Atlas includes a responsive, infinitely scrolling catalog,
 debounced name/number search, shareable type/generation/ability filters, sorting,
 detail routes, theme and language preferences, shared UI primitives, validated
 PokéAPI models, and persisted TanStack Query caching. Pokémon details show
@@ -10,8 +10,10 @@ evolution requirements, gender ratio, egg groups, capture rate, growth rate,
 species varieties, and a compact level-up move list. The detail view has
 distinct light/dark themes for all 18 Pokémon types, including a secondary
 accent for dual types. Automated unit, browser, and production Pages checks
-cover the release candidate. See the [roadmap](pokedex-project-roadmap.md) for
-release status, publication steps, and post-MVP extensions.
+cover the published version. See the [roadmap](pokedex-project-roadmap.md) for
+release verification and post-MVP extensions.
+
+**Live site:** [lucaspmm.github.io/poke-atlas](https://lucaspmm.github.io/poke-atlas/)
 
 ## Requirements
 
@@ -41,9 +43,23 @@ GITHUB_PAGES_BASE=/poke-atlas/ pnpm test:pages
 
 The [deployment workflow](.github/workflows/deploy.yml) runs checks, coverage,
 desktop/mobile browser journeys, and the production smoke test before
-publishing the `dist` artifact from `main`. Set the repository's **Settings →
-Pages → Build and deployment → Source** to **GitHub Actions**. The live site
-and screenshots will be added only after the first deployment is verified.
+publishing the `dist` artifact from `main`. The [first successful Pages
+deployment](https://github.com/LucasPMM/poke-atlas/actions/runs/34792164195)
+published commit `c683235`.
+
+## Screenshots
+
+### Desktop catalog
+
+![Poké Atlas desktop catalog](docs/screenshots/desktop.png)
+
+### Mobile catalog
+
+![Poké Atlas mobile catalog](docs/screenshots/mobile.png)
+
+### Pokémon details
+
+![Pikachu detail page](docs/screenshots/details.png)
 
 ## Project conventions
 
@@ -80,18 +96,17 @@ their values remain unchanged. The title and page description follow the
 selected locale. Pokémon artwork uses subtle movement inside fixed frames;
 third-party Lottie animations can be reviewed individually later.
 
-The published site link and final desktop/mobile screenshots will be added
-here after the release is deployed and visually verified.
-
 The CI workflow runs the same checks, coverage, production build, and mocked
 desktop/mobile Playwright journeys on pull requests and pushes to `main`.
 Coverage must meet 85% statements, 80% branches, 85% functions, and 85% lines.
 
-The local production audit on 2026-09-13 passed all 10 browser journeys and
-Lighthouse scored 94/100 performance and 100/100 accessibility, best practices,
-and SEO on mobile. Desktop scored 100 in all four categories. The preview used
-the `/poke-atlas/` base path; repeat the audit against the published URL after
-deployment.
+The release audit on 2026-09-13 passed all 10 mocked browser journeys. The
+published site returned HTTP 200 for home and detail refresh, loaded all 24
+initial catalog images, and showed no horizontal overflow or first-party
+browser errors on desktop and mobile. Live search, type filtering, and their
+combination returned the expected Pokémon without `undefined` requests.
+Lighthouse scored 96 performance and 100 accessibility, best practices, and
+SEO on mobile; desktop scored 100 in all four categories.
 
 ## GitHub repository metadata
 

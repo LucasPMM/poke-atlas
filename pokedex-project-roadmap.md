@@ -1,11 +1,10 @@
 # poke-atlas — Project Roadmap
 
-> Project status (2026-09-13): The initial MVP roadmap is implemented and
-> validated locally through Phase 14. GitHub Pages publication is the only
-> release gate still open: enable **GitHub Actions** as the Pages source, push
-> the release commit, verify the deployment, and add its URL and screenshots to
-> the README. Weakness, height, and weight filters are post-MVP extensions,
-> not release gates.
+> Project status (2026-09-13): The initial MVP roadmap is complete through
+> Phase 14 and published at <https://lucaspmm.github.io/poke-atlas/>. The
+> deployment of `c683235` succeeded; live desktop/mobile review, screenshots,
+> and Lighthouse verification are recorded below. Weakness, height, and weight
+> filters remain post-MVP extensions, not release gates.
 
 ## 1. Project Overview
 
@@ -1679,15 +1678,17 @@ lockfile, and uploads coverage and Playwright diagnostics after failures.
 - Verify direct navigation and refresh.
 - Verify mobile production layout.
 
-**Implementation complete; publication pending.** The Pages workflow
+**Complete.** The Pages workflow
 validates the project, coverage, browser journeys, and a project-path
 production preview before publishing. It obtains the base path from
 `actions/configure-pages` and builds with `GITHUB_PAGES_BASE`. The production
 Playwright suite checks hashed detail routes, refresh, assets, and 320 px
-width. The repository currently has no Pages site; its **Source** must be set
-to **GitHub Actions** before the workflow can publish. The live deployment and
-URL cannot be marked verified until that setting is changed and the release
-commit reaches `main`.
+width. The [deployment of commit
+`c683235`](https://github.com/LucasPMM/poke-atlas/actions/runs/34792164195)
+completed successfully. The published home and direct `#/pokemon/25` route
+returned HTTP 200, including after refresh; the initial 24 catalog images
+loaded without first-party browser errors or horizontal overflow on desktop
+and mobile.
 
 ---
 
@@ -1710,28 +1711,34 @@ Before the first release:
 - Review accessibility.
 - Review mobile layouts.
 
-**Local review complete.** The production Lighthouse audit led to contrast
+**Complete.** The local production Lighthouse audit led to contrast
 and SEO fixes; mocked desktop/mobile Playwright tests pass, and unused query
-helpers were removed. The local production audit scored 94 performance and
-100 accessibility, best practices, and SEO on mobile; desktop scored 100 in
-all four categories. Recheck the published URL and capture final screenshots
-after the first deploy.
+helpers were removed. The published site was reviewed with live PokéAPI data,
+including catalog search, type filtering, a detail refresh, return navigation,
+language change, and persistent theme choice. Final desktop, mobile, and detail
+screenshots are embedded in the README. Live Lighthouse scored 96 performance
+and 100 accessibility, best practices, and SEO on mobile; desktop scored 100
+in all four categories.
 
 Do not commit until changes are explicitly reviewed and approved.
 
 ---
 
-## Release handoff
+## Release verification
 
-1. In repository **Settings → Pages → Build and deployment**, select **GitHub
-   Actions** as the source. The public Pages API currently returns 404 for this
-   repository, so this step is required before deployment.
-2. Push the reviewed release commit to `main`. The deployment workflow then
-   runs all checks and publishes the `dist` artifact.
-3. Verify the published URL, direct detail navigation, refresh, mobile layout,
-   and browser console. Repeat Lighthouse against the live site.
-4. Add the verified site URL and final desktop/mobile screenshots to the
-   README. These are intentionally absent until publication is confirmed.
+1. The [GitHub Pages deployment
+   workflow](https://github.com/LucasPMM/poke-atlas/actions/runs/34792164195)
+   completed successfully for commit `c683235` on `main`.
+2. <https://lucaspmm.github.io/poke-atlas/> served the expected HTML, CSS,
+   JavaScript, and favicon under `/poke-atlas/`; direct detail navigation and
+   refresh worked in Chromium.
+3. Desktop at 1440 px and mobile at 390 px loaded all initial 24 Pokémon
+   images with no first-party page/asset errors or horizontal overflow. Live
+   search and type filters returned expected results without `undefined`
+   requests.
+4. Live Lighthouse scored 96/100/100/100 on mobile and 100/100/100/100 on
+   desktop (performance/accessibility/best practices/SEO). The README includes
+   final desktop, mobile, and detail screenshots.
 
 The optional filters and ideas listed outside the initial MVP scope remain a
 separate post-release backlog and do not reopen the completed phases.

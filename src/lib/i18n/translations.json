@@ -2,6 +2,7 @@
   "pt-BR": {
     "brand.name": "Poké Atlas",
     "meta.title": "Poké Atlas — Explore Pokémon",
+    "meta.description": "Explore Pokémon, compare tipos e descubra suas histórias em uma Pokédex multilíngue.",
     "brand.tagline": "Seu mundo Pokémon, organizado.",
     "controls.language": "Idioma",
     "controls.theme": "Aparência",
@@ -210,6 +211,7 @@
   "en": {
     "brand.name": "Poké Atlas",
     "meta.title": "Poké Atlas — Explore Pokémon",
+    "meta.description": "Explore Pokémon, compare types, and discover their stories in a multilingual Pokédex.",
     "brand.tagline": "Your Pokémon world, organized.",
     "controls.language": "Language",
     "controls.theme": "Appearance",
@@ -418,6 +420,7 @@
   "fr": {
     "brand.name": "Poké Atlas",
     "meta.title": "Poké Atlas — Explorez les Pokémon",
+    "meta.description": "Explorez les Pokémon, comparez les types et découvrez leurs histoires dans un Pokédex multilingue.",
     "brand.tagline": "Votre univers Pokémon, organisé.",
     "controls.language": "Langue",
     "controls.theme": "Apparence",

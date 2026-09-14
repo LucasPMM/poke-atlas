@@ -51,8 +51,8 @@ export const Select = <T extends string>({
         menu: () => 'z-30 rounded-lg border border-line bg-surface shadow-lg',
         menuList: () => 'p-1',
         option: (state) =>
-          `cursor-pointer rounded-md px-3 py-2 text-ink ${state.isFocused ? 'bg-surface-muted' : ''} ${state.isSelected ? 'font-medium text-action' : ''}`,
-        singleValue: () => 'font-semibold text-ink',
+          `cursor-pointer rounded-md px-3 py-2 capitalize text-ink ${state.isFocused ? 'bg-surface-muted' : ''} ${state.isSelected ? 'font-medium text-action' : ''}`,
+        singleValue: () => 'font-semibold capitalize text-ink',
         valueContainer: () =>
           variant === 'compact'
             ? 'flex h-full items-center justify-center p-0'

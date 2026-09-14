@@ -1,7 +1,7 @@
 # poke-atlas
 
 A multilingual Pokédex built with React, TypeScript, Vite, and Tailwind CSS.
-The current milestone includes a responsive, infinitely scrolling catalog,
+The release candidate includes a responsive, infinitely scrolling catalog,
 debounced name/number search, shareable type/generation/ability filters, sorting,
 detail routes, theme and language preferences, shared UI primitives, validated
 PokéAPI models, and persisted TanStack Query caching. Pokémon details show
@@ -9,8 +9,9 @@ localized flavor text, measurements, abilities, base stats, type matchups,
 evolution requirements, gender ratio, egg groups, capture rate, growth rate,
 species varieties, and a compact level-up move list. The detail view has
 distinct light/dark themes for all 18 Pokémon types, including a secondary
-accent for dual types. See the [roadmap](pokedex-project-roadmap.md) for the
-remaining validation and release phases.
+accent for dual types. Automated unit, browser, and production Pages checks
+cover the release candidate. See the [roadmap](pokedex-project-roadmap.md) for
+release status, publication steps, and post-MVP extensions.
 
 ## Requirements
 
@@ -30,7 +31,19 @@ pnpm build
 
 The app uses hash routes so it can run on GitHub Pages without server-side
 route rewrites. To build for a project page, set `GITHUB_PAGES_BASE` to the
-repository path, for example `/poke-atlas/`.
+repository path, for example `/poke-atlas/`. Run the production smoke test
+against that build:
+
+```sh
+GITHUB_PAGES_BASE=/poke-atlas/ pnpm build
+GITHUB_PAGES_BASE=/poke-atlas/ pnpm test:pages
+```
+
+The [deployment workflow](.github/workflows/deploy.yml) runs checks, coverage,
+desktop/mobile browser journeys, and the production smoke test before
+publishing the `dist` artifact from `main`. Set the repository's **Settings →
+Pages → Build and deployment → Source** to **GitHub Actions**. The live site
+and screenshots will be added only after the first deployment is verified.
 
 ## Project conventions
 
@@ -46,8 +59,8 @@ Catalog search, filters, and sorting live in the URL. The unfiltered view uses
 infinite PokéAPI pages; a filtered view loads the lightweight Pokémon catalog
 and relevant membership lists, then intersects and sorts them in the client.
 Filtered results are revealed in batches of 24 cards. Weakness, height, and
-weight filters remain later extensions because the v2 list endpoint does not
-provide the data needed for a reliable bulk filter.
+weight filters belong to the post-MVP backlog because the v2 list endpoint
+does not provide the data needed for a reliable bulk filter.
 The detail page loads species, types, and evolution data through separate
 cached queries. Its sections can retry independently when optional data fails,
 while measurements, abilities, and stats remain available.
@@ -62,8 +75,10 @@ request, preventing paths such as `/pokemon-species/undefined`.
 
 The visible brand and localized browser title use **Poké Atlas** while the
 repository slug remains `poke-atlas`. The language selector shows a country
-flag, language code, and chevron. Pokémon artwork uses subtle movement inside
-fixed frames; third-party Lottie animations can be reviewed individually later.
+flag, language code, and chevron. Select labels are capitalized visually while
+their values remain unchanged. The title and page description follow the
+selected locale. Pokémon artwork uses subtle movement inside fixed frames;
+third-party Lottie animations can be reviewed individually later.
 
 The published site link and final desktop/mobile screenshots will be added
 here after the release is deployed and visually verified.
@@ -71,6 +86,12 @@ here after the release is deployed and visually verified.
 The CI workflow runs the same checks, coverage, production build, and mocked
 desktop/mobile Playwright journeys on pull requests and pushes to `main`.
 Coverage must meet 85% statements, 80% branches, 85% functions, and 85% lines.
+
+The local production audit on 2026-09-13 passed all 10 browser journeys and
+Lighthouse scored 94/100 performance and 100/100 accessibility, best practices,
+and SEO on mobile. Desktop scored 100 in all four categories. The preview used
+the `/poke-atlas/` base path; repeat the audit against the published URL after
+deployment.
 
 ## GitHub repository metadata
 

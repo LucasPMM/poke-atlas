@@ -1,11 +1,12 @@
 import { env } from 'node:process'
 import { defineConfig, devices } from '@playwright/test'
 
-const baseURL = 'http://127.0.0.1:4173'
+const basePath = env.GITHUB_PAGES_BASE ?? '/poke-atlas/'
+const baseURL = new URL(basePath, 'http://127.0.0.1:4174').toString()
 
 export default defineConfig({
   testDir: './e2e',
-  testIgnore: 'pages.spec.ts',
+  testMatch: 'pages.spec.ts',
   fullyParallel: true,
   workers: 2,
   forbidOnly: Boolean(env.CI),
@@ -15,12 +16,18 @@ export default defineConfig({
   projects: [
     { name: 'desktop-chromium', use: { ...devices['Desktop Chrome'] } },
     {
-      name: 'mobile-chromium',
-      use: { ...devices['iPhone 13'], defaultBrowserType: 'chromium' }
+      name: 'mobile-320-chromium',
+      use: {
+        browserName: 'chromium',
+        viewport: { width: 320, height: 720 },
+        deviceScaleFactor: 1,
+        isMobile: true,
+        hasTouch: true
+      }
     }
   ],
   webServer: {
-    command: 'pnpm dev --host 127.0.0.1 --port 4173 --strictPort',
+    command: 'pnpm preview --host 127.0.0.1 --port 4174 --strictPort',
     url: baseURL,
     reuseExistingServer: !env.CI,
     timeout: 60_000

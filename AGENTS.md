@@ -71,6 +71,9 @@
   accessible manual load action.
 - Keep mobile and desktop layouts accessible with visible focus styles,
   keyboard support, and comfortable touch targets.
+  Keep action-text and button contrast readable on both global themes. Apply
+  capitalization through the shared Select presentation, preserving option
+  values and locale translations. Localize the page description with the title.
 - Keep detail-section navigation compatible with hash routes and offset its
   scroll targets below the fixed header. Load artwork in reserved frames and
   reveal it after loading without moving surrounding cards. Give empty states
@@ -80,5 +83,10 @@
   for mocked desktop/mobile journeys when changing core behavior. CI must run
   frozen installation, `pnpm check`, coverage, build, and Playwright tests with
   the same scripts used locally.
+- Build GitHub Pages with the repository base path from `GITHUB_PAGES_BASE`.
+  Keep hash routes refreshable and verify production assets, direct detail
+  navigation, and a 320 px layout with `pnpm test:pages` before deployment.
+  Set repository Pages Source to GitHub Actions and verify the live URL before
+  adding it or final screenshots to the README.
 - Never commit unless the user explicitly requests a commit after reviewing
   the exact current changes. Follow Conventional Commits when authorized.

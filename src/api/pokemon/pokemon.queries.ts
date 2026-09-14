@@ -15,8 +15,6 @@ import {
 const DAY_MS = 24 * 60 * 60 * 1000
 
 export const pokemonKeys = {
-  list: (offset: number, limit: number) =>
-    ['pokemon', 'list', offset, limit] as const,
   infiniteList: (limit: number) => ['pokemon', 'infinite-list', limit] as const,
   catalog: () => ['pokemon', 'catalog'] as const,
   typeMembers: (type: string) => ['pokemon', 'type-members', type] as const,
@@ -33,13 +31,6 @@ export const pokemonKeys = {
     ['pokemon', 'type', identifier] as const,
   evolution: (id: number) => ['pokemon', 'evolution', id] as const
 }
-
-export const pokemonListOptions = (offset = 0, limit = 30) =>
-  queryOptions({
-    queryKey: pokemonKeys.list(offset, limit),
-    queryFn: ({ signal }) => getPokemonListPage(offset, limit, signal),
-    staleTime: DAY_MS
-  })
 
 export const pokemonInfiniteListOptions = (limit = 24) =>
   infiniteQueryOptions({

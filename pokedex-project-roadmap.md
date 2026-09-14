@@ -1,8 +1,11 @@
 # poke-atlas — Project Roadmap
 
-> Project status: Phases 0–10 are committed. Phases 11 and 12 are implemented
-> locally and await review. Phase 13 is next. Weakness, height, and weight
-> filters remain planned extensions of Phase 6.
+> Project status (2026-09-13): The initial MVP roadmap is implemented and
+> validated locally through Phase 14. GitHub Pages publication is the only
+> release gate still open: enable **GitHub Actions** as the Pages source, push
+> the release commit, verify the deployment, and add its URL and screenshots to
+> the README. Weakness, height, and weight filters are post-MVP extensions,
+> not release gates.
 
 ## 1. Project Overview
 
@@ -1487,10 +1490,10 @@ Then extend with:
 - Weight.
 
 Ability filtering is included in the initial Phase 6 implementation. Weakness,
-height, and weight need a separate data-index strategy: PokéAPI v2 exposes type
-damage relations and per-Pokémon height/weight, but its Pokémon list response
-does not include bulk type or measurement metadata. Keep those extensions open
-until they can be implemented without an unbounded detail-request fan-out.
+height, and weight are deferred to the post-MVP backlog because they need a
+separate data-index strategy: PokéAPI v2 exposes type damage relations and
+per-Pokémon height/weight, but its Pokémon list response does not include bulk
+type or measurement metadata. Do not add an unbounded detail-request fan-out.
 
 ### Important
 
@@ -1676,6 +1679,16 @@ lockfile, and uploads coverage and Playwright diagnostics after failures.
 - Verify direct navigation and refresh.
 - Verify mobile production layout.
 
+**Implementation complete; publication pending.** The Pages workflow
+validates the project, coverage, browser journeys, and a project-path
+production preview before publishing. It obtains the base path from
+`actions/configure-pages` and builds with `GITHUB_PAGES_BASE`. The production
+Playwright suite checks hashed detail routes, refresh, assets, and 320 px
+width. The repository currently has no Pages site; its **Source** must be set
+to **GitHub Actions** before the workflow can publish. The live deployment and
+URL cannot be marked verified until that setting is changed and the release
+commit reaches `main`.
+
 ---
 
 ## Phase 14 — Final Review
@@ -1697,7 +1710,31 @@ Before the first release:
 - Review accessibility.
 - Review mobile layouts.
 
+**Local review complete.** The production Lighthouse audit led to contrast
+and SEO fixes; mocked desktop/mobile Playwright tests pass, and unused query
+helpers were removed. The local production audit scored 94 performance and
+100 accessibility, best practices, and SEO on mobile; desktop scored 100 in
+all four categories. Recheck the published URL and capture final screenshots
+after the first deploy.
+
 Do not commit until changes are explicitly reviewed and approved.
+
+---
+
+## Release handoff
+
+1. In repository **Settings → Pages → Build and deployment**, select **GitHub
+   Actions** as the source. The public Pages API currently returns 404 for this
+   repository, so this step is required before deployment.
+2. Push the reviewed release commit to `main`. The deployment workflow then
+   runs all checks and publishes the `dist` artifact.
+3. Verify the published URL, direct detail navigation, refresh, mobile layout,
+   and browser console. Repeat Lighthouse against the live site.
+4. Add the verified site URL and final desktop/mobile screenshots to the
+   README. These are intentionally absent until publication is confirmed.
+
+The optional filters and ideas listed outside the initial MVP scope remain a
+separate post-release backlog and do not reopen the completed phases.
 
 ---
 

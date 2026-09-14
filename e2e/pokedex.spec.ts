@@ -199,6 +199,10 @@ test('type and generation filters survive a detail visit', async ({ page }) => {
       ? page.getByRole('dialog', { name: 'Filters' })
       : page.locator('.mt-5.hidden.md\\:block')
   await filterArea.getByText('All types', { exact: true }).click()
+  await expect(page.getByRole('option', { name: 'Fire' })).toHaveCSS(
+    'text-transform',
+    'capitalize'
+  )
   await page.getByRole('option', { name: 'Fire' }).click()
   await filterArea.getByText('All generations', { exact: true }).click()
   await page.keyboard.press('ArrowDown')

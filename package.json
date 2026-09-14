@@ -11,13 +11,14 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc -b --pretty false && tsc -p tsconfig.e2e.json --pretty false",
+    "typecheck": "tsc -b --pretty false",
     "format": "biome check --write .",
     "format:check": "biome format .",
     "lint": "biome lint . && node scripts/check-code-conventions.mjs",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
+    "test:pages": "playwright test --config=playwright.pages.config.ts",
     "check": "pnpm typecheck && pnpm lint && pnpm test && pnpm format:check"
   },
   "dependencies": {

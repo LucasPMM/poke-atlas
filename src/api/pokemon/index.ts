@@ -19,7 +19,6 @@ export {
   pokemonGenerationMembersOptions,
   pokemonInfiniteListOptions,
   pokemonKeys,
-  pokemonListOptions,
   pokemonSpeciesOptions,
   pokemonTypeMembersOptions,
   pokemonTypeOptions
